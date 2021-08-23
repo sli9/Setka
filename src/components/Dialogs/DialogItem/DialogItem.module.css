@@ -1,0 +1,8 @@
+.message {
+    color: antiquewhite;
+}
+
+.dialog  a.active{
+    color: gold;
+    padding: 10px;
+}
