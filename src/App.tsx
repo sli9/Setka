@@ -5,29 +5,29 @@ import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile/Profile";
 import Dialogs from "./components/Dialogs/Dialogs";
 import {BrowserRouter, Route} from "react-router-dom";
-import {rootStateType} from "./Redux/state";
+import {storeType} from "./Redux/state";
 
-type stateType = {
-    state: rootStateType
-    AddPost: () => void
-    ChangeMessage: (letter: string) => void
+type propsType = {
+    store: storeType
 }
 
-function App(props: stateType) {
+const App: React.FC<propsType> = (props) => {
+    const state = props.store.getState()
     return (<BrowserRouter>
             <div className={'app-wrapper'}>
                 <Header/>
                 <Navbar/>
                 <div className={'app-wrapper-content'}>
                     <Route path='/dialogs' render={() => <Dialogs
-                        dialogs={props.state.dialogsPage.dialogs}
-                        messages={props.state.dialogsPage.messages}
+                        dispatch={props.store.dispatch.bind(props.store)}
+                        newMessageText={state.dialogsPage.newMessageText}
+                        dialogs={state.dialogsPage.dialogs}
+                        messages={state.dialogsPage.messages}
                     />}/>
                     <Route path='/profile' render={() => <Profile
-                        posts={props.state.profilePage.posts}
-                        AddPost={props.AddPost}
-                        newLetters={props.state.profilePage.newLetters}
-                        ChangeMessage={props.ChangeMessage}
+                        posts={state.profilePage.posts}
+                        dispatch={props.store.dispatch.bind(props.store)}
+                        newLetters={state.profilePage.newLetters}
                     />}/>
 
                 </div>
