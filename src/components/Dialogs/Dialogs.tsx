@@ -2,14 +2,14 @@ import React, {ChangeEvent} from "react";
 import classes from "./Dialogs.module.css"
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {actionsTypes, dialogType, messageType} from "../../Redux/state";
-import {AddMessageTextAC, ChangeMessageTextAC} from "../../Redux/dialogs-reducer";
+import {dialogType, messageType} from "../../Redux/state";
 
 type DialogsPropsType = {
+    ChangeMessage: (text: string) => void
+    AddMessage: () => void
     dialogs: Array<dialogType>
     messages: Array<messageType>
     newMessageText: string
-    dispatch: (action: actionsTypes) => void
 }
 
 const Dialogs = (props: DialogsPropsType) => {
@@ -17,10 +17,10 @@ const Dialogs = (props: DialogsPropsType) => {
     let messagesItem = props.messages.map(message => <Message message={message.message}/>)
 
     const changeTextHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch(ChangeMessageTextAC(e.currentTarget.value))
+        props.ChangeMessage(e.currentTarget.value)
     }
     const addMessageHandler = () => {
-        props.dispatch(AddMessageTextAC())
+        props.AddMessage()
     }
     return (
         <div className={classes.dialogs}>

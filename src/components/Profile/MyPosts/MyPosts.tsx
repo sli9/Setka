@@ -1,22 +1,22 @@
 import React, {ChangeEvent} from 'react';
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {actionsTypes, postType} from "../../../Redux/state";
-import {AddPostAC, ChangeMessageAC} from "../../../Redux/profile-reducer";
+import {postType} from "../../../Redux/state";
 
 type PostsType = {
+    ChangeMessage: (text: string) => void
+    AddPost: () => void
     posts: Array<postType>
-    dispatch: (action: actionsTypes) => void
     newLetters: string
 }
 
 const MyPosts = (props: PostsType) => {
 
     const PostHandler = () => {
-        props.dispatch(AddPostAC())
+        props.AddPost()
     }
     const ChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch(ChangeMessageAC(e.currentTarget.value))
+        props.ChangeMessage(e.currentTarget.value)
     }
 
     return <div className={classes.posts}>
