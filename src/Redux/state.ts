@@ -30,7 +30,7 @@ export type rootStateType = {
 }
 export type storeType = {
     _state: rootStateType
-    Subscribe: (observer: () => void) => void
+    subscribe: (observer: () => void) => void
     getState: () => rootStateType
     _callSubscriber: () => void
     dispatch: (action: actionsTypes) => void
@@ -73,7 +73,7 @@ const store: storeType = {
     _callSubscriber() {
         console.log('State changed')
     },
-    Subscribe(observer) {
+    subscribe(observer) {
         this._callSubscriber = observer
     },
     getState() {

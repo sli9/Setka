@@ -2,12 +2,13 @@ import React from 'react';
 import './index.css';
 import ReactDOM from "react-dom";
 import App from "./App";
-import store from "./Redux/state";
+import store from "./Redux/redux-store";
+import {rootStateType} from "./Redux/state";
 
-function RenderTree() {
+function RenderTree(state: rootStateType) {
     ReactDOM.render(
         <React.StrictMode>
-            <App store={store}/>
+            <App state={state} dispatch={store.dispatch.bind(store)}/>
         </React.StrictMode>,
         document.getElementById('root')
     );
@@ -15,5 +16,5 @@ function RenderTree() {
 
 export default RenderTree;
 
-RenderTree();
-store.Subscribe(RenderTree)
+RenderTree(store.getState());
+store.subscribe(()=>RenderTree(store.getState()))
