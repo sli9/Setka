@@ -2,21 +2,25 @@ import React from 'react';
 import './index.css';
 import ReactDOM from "react-dom";
 import App from "./App";
-import store, {rootStateType} from "./Redux/state";
+import store from "./Redux/redux-store";
+import {BrowserRouter} from "react-router-dom";
+import {Provider} from './StoreContext';
 
 
-function RenderTree(state: rootStateType) {
+function RenderTree() {
     ReactDOM.render(
         <React.StrictMode>
-
-            <App store={store}/>
-
+            <Provider store={store}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Provider>
         </React.StrictMode>,
         document.getElementById('root')
     );
-}
+ }
 
 export default RenderTree;
 
-RenderTree(store.getState());
-store.subscribe(() => RenderTree(store.getState()))
+RenderTree();
+store.subscribe(() => RenderTree())
