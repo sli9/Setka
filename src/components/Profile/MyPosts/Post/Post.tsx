@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './Post.module.css'
-import {postType} from "../../../../Redux/state";
+import {postType} from "../../../../Redux/profile-reducer";
 
 
 const Post: React.FC<postType> = (props) => {

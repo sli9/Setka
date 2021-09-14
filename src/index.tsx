@@ -4,21 +4,21 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import store from "./Redux/redux-store";
 import {BrowserRouter} from "react-router-dom";
-import {Provider} from './StoreContext';
+import {Provider} from "react-redux";
 
 
 function RenderTree() {
     ReactDOM.render(
         <React.StrictMode>
-            <Provider store={store}>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </Provider>
+            <BrowserRouter>
+                <Provider store={store}>
+                    <App/>
+                </Provider>
+            </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')
     );
- }
+}
 
 export default RenderTree;
 

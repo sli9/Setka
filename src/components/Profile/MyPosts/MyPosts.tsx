@@ -1,14 +1,10 @@
 import React, {ChangeEvent} from 'react';
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {postType} from "../../../Redux/state";
+import {initialStateTypeofProfile} from "../../../Redux/profile-reducer";
+import {mapDispatchToPropsType} from "./MyPostsContainer";
 
-type PostsType = {
-    ChangeMessage: (text: string) => void
-    AddPost: () => void
-    posts: Array<postType>
-    newLetters: string
-}
+type PostsType = initialStateTypeofProfile & mapDispatchToPropsType
 
 const MyPosts = (props: PostsType) => {
 
@@ -23,7 +19,7 @@ const MyPosts = (props: PostsType) => {
         <h4>My posts</h4>
         <div>
             <div>
-                <textarea value={props.newLetters} onChange={ChangeHandler}></textarea>
+                <textarea value={props.newLetters} onChange={ChangeHandler}/>
             </div>
             <div>
                 <button onClick={PostHandler}>Add post</button>
