@@ -27,7 +27,7 @@ export type initialStateTypeofDialogs = typeof initialState
 export type actionsTypes = ReturnType<typeof ChangeMessageTextAC> |
     ReturnType<typeof AddMessageTextAC>
 
- export const ChangeMessageTextAC = (text: string) => {
+export const ChangeMessageTextAC = (text: string) => {
     return {
         type: 'CHANGE-MESSAGE-TEXT',
         text: text
@@ -47,12 +47,17 @@ const DialogsReducer = (state: initialStateTypeofDialogs = initialState, action:
                 id: '6',
                 message: state.newMessageText,
             }
-           state.messages.push(NewMessage)
-            state.newMessageText = ''
-            return state;
+            return {
+                ...state,
+                messages:[...state.messages, NewMessage],
+                newMessageText: ''
+            }
         case "CHANGE-MESSAGE-TEXT":
             state.newMessageText = action.text
-            return state
+            return {
+                ...state,
+                newMessageText: action.text
+            }
         default:
             return state
     }

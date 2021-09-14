@@ -28,19 +28,21 @@ export const ChangeMessageAC = (letter: string) => {
     } as const
 }
 const ProfileReducer = (state: initialStateTypeofProfile = initialState, action: actionsTypes): initialStateTypeofProfile => {
-
     switch (action.type) {
         case "ADD-POST":
             const NewPost = {
                 message: state.newLetters,
                 like: 0
             }
-            state.posts.unshift(NewPost)
-            state.newLetters = ''
-            return state;
+            return {
+                ...state,
+                posts: [...state.posts, NewPost]
+            }
         case "CHANGE-MESSAGE":
-            state.newLetters = action.letter
-            return state;
+            return {
+                ...state,
+                newLetters: action.letter
+            }
         default:
             return state
     }
