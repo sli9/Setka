@@ -36,7 +36,8 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
             }
             return {
                 ...state,
-                posts: [...state.posts, NewPost]
+                posts: [NewPost, ...state.posts],
+                newLetters: ''
             }
         case "CHANGE-MESSAGE":
             return {
