@@ -6,24 +6,26 @@ import axios from "axios";
 import  DefaultPhoto from '../../assets/images/Default_User_Icon.png'
 
 
-const Users = (props: initialStateOfUsersType & mapDispatchToPropsType) => {
+class Users extends React.Component<mapDispatchToPropsType & initialStateOfUsersType> {
 
-    if (props.users.length === 0) {
-       axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
-           props.setUsers(response.data.items)
-       })
+   componentDidMount() {
+        axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
+            this.props.setUsers(response.data.items)
+        })
     }
 
-    return <div>
-        {props.users.map(u => <div key={u.id}>
+    render() {
+
+        return <div>
+        {this.props.users.map(u => <div key={u.id}>
             <span>
                 <div>
                 <img src={u.photos.small !== null ? u.photos.small : DefaultPhoto} className={classes.userPhoto} alt='image'/>
                 </div>
                 <div>
                 {u.followed ?
-                             <button onClick={() => {props.UnFollow(u.id)}}>Unfollow</button>
-                            : <button onClick={() => {props.Follow(u.id)}}>Follow</button>}
+                             <button onClick={() => {this.props.UnFollow(u.id)}}>Unfollow</button>
+                            : <button onClick={() => {this.props.Follow(u.id)}}>Follow</button>}
             </div>
             </span>
             <div>{u.name}</div>
@@ -34,6 +36,6 @@ const Users = (props: initialStateOfUsersType & mapDispatchToPropsType) => {
             </span>
         </div>)}
     </div>
-}
+}}
 
 export default Users;
