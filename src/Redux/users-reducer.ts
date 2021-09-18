@@ -3,12 +3,17 @@ const initialState = {
 }
 export type initialStateOfUsersType = typeof initialState
 
+    type photoType = {
+        small: string | null
+        large: string | null
+    }
+
 export type usersType = {
-    id: string
-    photoUrl: string
+    id: number
+    photos: photoType
     followed: boolean
     name: string
-    status: string
+    status: string | null
     location: locationType
 }
 type locationType = {
@@ -22,13 +27,15 @@ type followType = ReturnType<typeof followAC>
 type unfollowType = ReturnType<typeof unfollowAC>
 type setUsersType = ReturnType<typeof setUsersAC>
 
-export const followAC = (userId: string) => {
+
+
+export const followAC = (userId: number) => {
     return {
         type: 'FOLLOW',
         userId: userId
     } as const
 }
-export const unfollowAC = (userId: string) => {
+export const unfollowAC = (userId: number) => {
     return {
         type: 'UNFOLLOW',
         userId: userId

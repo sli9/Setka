@@ -11,14 +11,14 @@ const mapStateToProps = (state: AppRootStoreType): initialStateOfUsersType => {
 }
 
 export type mapDispatchToPropsType ={
-    Follow: (userId: string) => void
-    UnFollow: (userId: string) => void
+    Follow: (userId: number) => void
+    UnFollow: (userId: number) => void
     setUsers: (users: Array<usersType>) => void
 }
 const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     return{
-        Follow: (userId: string) => {dispatch(followAC(userId))},
-        UnFollow: (userId: string) => {dispatch(unfollowAC(userId))},
+        Follow: (userId: number) => {dispatch(followAC(userId))},
+        UnFollow: (userId: number) => {dispatch(unfollowAC(userId))},
         setUsers: (users: Array<usersType>) => {dispatch(setUsersAC(users))}
     }
 
