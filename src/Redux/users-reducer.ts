@@ -1,6 +1,6 @@
 const initialState = {
     users: [] as Array<usersType>,
-    pageSize: 3,
+    pageSize: 4,
     totalUsers: 20,
     currentPage: 1
 }
@@ -65,7 +65,6 @@ export const setTotalUsersCountAC = (totalCount: number) => {
 }
 
 const UsersReducer = (state = initialState, action: actionsTypes): initialStateOfUsersType => {
-
     switch (action.type) {
         case 'FOLLOW':
             return {
