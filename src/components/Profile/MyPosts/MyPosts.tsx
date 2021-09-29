@@ -27,7 +27,7 @@ const MyPosts = (props: PostsType) => {
         </div>
         <div><h3>New post</h3></div>
         <div className={classes.posts}>
-            {props.posts.map(p => <Post message={p.message} like={p.like}/>)}
+            {props.posts.map((p, i) => <Post key={i} message={p.message} like={p.like}/>)}
         </div>
     </div>
 

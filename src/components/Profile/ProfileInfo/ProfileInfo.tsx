@@ -1,15 +1,23 @@
 import React from 'react';
 import classes from './ProfileInfo.module.css'
+import {profileType} from "../../../Redux/profile-reducer";
+import {Preloader} from "../../common/Preloader";
 
+type PropsType = {
+    profile: profileType | null
+}
 
-const ProfileInfo = () => {
+const ProfileInfo = (props: PropsType) => {
+    if (!props.profile){ //if props.profile === nul || props.profile === undefind
+        return <Preloader/>
+    }
     return <div className={classes.content}>
-        <div>
-            <img
-                src='https://www.wallpaperup.com/uploads/wallpapers/2016/11/04/1031441/c1b38f76dbc9a27c74006368de5d45b1-700.jpg'
-                alt='yps'/>
+        <div className={classes.back}>
+            <img src='https://wallup.net/wp-content/uploads/2019/09/1031441-honda-cbr-1000f-motorcycles-1993.jpg' alt='sorry'/>
         </div>
-        <div className={classes.description}>Ava+description</div>
+        <div className={classes.description}>
+            <img src={props.profile.photos.large !== null ? props.profile.photos.large : ''} alt='yps'/>
+         Ava+description</div>
     </div>
 
 }

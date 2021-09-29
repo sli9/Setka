@@ -1,3 +1,7 @@
 .description {
     padding: 10px;
 }
+
+.content .back img {
+    width: 70em;
+}
