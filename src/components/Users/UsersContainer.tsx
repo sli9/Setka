@@ -3,37 +3,23 @@ import Users from "./Users";
 import {AppRootStoreType} from "../../Redux/redux-store";
 import {
     follow,
+    getUsers,
     initialStateOfUsersType,
-    setCurrentPage,
     setTotalUsersCount,
-    setUsers,
-    toggleFetching, toggleFollowing,
-    unfollow,
-    usersType
+    toggleFollowing, unFollow
 } from "../../Redux/users-reducer";
 import React from "react";
 import {Preloader} from "../common/Preloader";
-import {usersApi} from "../../api/api";
 
 
 class UsersContainer extends React.Component<mapDispatchToPropsType & initialStateOfUsersType> {
 
     componentDidMount() {
-        this.props.toggleFetching(true)
-        usersApi.getUsers(this.props.currentPage,this.props.pageSize).then(data => {
-            this.props.toggleFetching(false)
-            this.props.setUsers(data.items)
-            this.props.setTotalUsersCount(data.totalCount)
-        })
+        this.props.getUsers(this.props.currentPage, this.props.pageSize)
     }
 
     onChangePage = (pageNumber: number) => {
-        this.props.toggleFetching(true)
-        this.props.setCurrentPage(pageNumber)
-        usersApi.getUsers(pageNumber,this.props.pageSize).then(data => {
-            this.props.toggleFetching(false)
-            this.props.setUsers(data.items)
-        })
+        this.props.getUsers(pageNumber, this.props.pageSize)
     }
 
     render() {
@@ -45,10 +31,10 @@ class UsersContainer extends React.Component<mapDispatchToPropsType & initialSta
                 currentPage={this.props.currentPage}
                 onChangePage={this.onChangePage}
                 users={this.props.users}
-                UnFollow={this.props.unfollow}
-                Follow={this.props.follow}
+                unFollow={this.props.unFollow}
+                follow={this.props.follow}
                 followingInProgress={this.props.followingInProgress}
-                toggleFollowing={this.props.toggleFollowing}
+
             />
         </>
     }
@@ -68,17 +54,12 @@ const mapStateToProps = (state: AppRootStoreType): initialStateOfUsersType => {
 
 export type mapDispatchToPropsType = {
     follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setUsers: (users: Array<usersType>) => void
-    setCurrentPage: (pageNumber: number) => void
+    unFollow: (userId: number) => void
     setTotalUsersCount: (totalCount: number) => void
-    toggleFetching: (fetching: boolean) => void
     toggleFollowing: (fetching: boolean, userId: number) => void
+    getUsers: (currentPage: number, pageSize: number) => void
 }
 
 
-export default connect(mapStateToProps, {
-    follow, unfollow, setUsers, setCurrentPage,
-    setTotalUsersCount, toggleFetching, toggleFollowing
-})(UsersContainer)
+export default connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing})(UsersContainer)
 
