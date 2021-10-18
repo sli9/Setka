@@ -2,10 +2,10 @@ import React, {ChangeEvent} from "react";
 import classes from "./Dialogs.module.css"
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {initialStateTypeofDialogs} from "../../Redux/dialogs-reducer";
-import {mapDispatchToPropsType} from "./DialogsContainer";
+import {mapDispatchToPropsType, mapStateToPropsType} from "./DialogsContainer";
+import {Redirect} from "react-router-dom";
 
-type DialogsPropsType = initialStateTypeofDialogs & mapDispatchToPropsType
+type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
 
 const Dialogs = (props: DialogsPropsType) => {
     let dialogsItem = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
@@ -17,6 +17,9 @@ const Dialogs = (props: DialogsPropsType) => {
     const addMessageHandler = () => {
         props.AddMessage()
     }
+
+    if(!props.isAuth) return <Redirect to={'/login'}/>
+
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItem}>

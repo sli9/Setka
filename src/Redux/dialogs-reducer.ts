@@ -12,7 +12,8 @@ const initialState = {
         {id: '3', message: 'What\'s wrong?'},
         {id: '3', message: 'What\'s wrong?'}
     ] as Array<messageType>,
-    newMessageText: ''
+    newMessageText: '',
+
 }
 export type dialogType = {
     id: string;

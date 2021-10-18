@@ -1,3 +1,6 @@
+import {Dispatch} from "redux";
+import {usersApi} from "../api/api";
+
 const initialState: initialStateTypeofProfile = {
     newLetters: '',
     posts: [
@@ -50,6 +53,12 @@ export const setUserProfile = (profile: profileType) => {
         type: 'SET-USER-PROFILE',
         profile
     } as const
+}
+
+export const getUserProfile = (userId: string) => (dispatch: Dispatch) => {
+    usersApi.getProfile(userId).then(data => {
+        dispatch(setUserProfile(data))
+    })
 }
 export const ChangeMessage = (letter: string) => {
     return {
