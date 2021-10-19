@@ -3,7 +3,6 @@ import classes from "./Dialogs.module.css"
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {mapDispatchToPropsType, mapStateToPropsType} from "./DialogsContainer";
-import {Redirect} from "react-router-dom";
 
 type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
 
@@ -17,8 +16,6 @@ const Dialogs = (props: DialogsPropsType) => {
     const addMessageHandler = () => {
         props.AddMessage()
     }
-
-    if(!props.isAuth) return <Redirect to={'/login'}/>
 
     return (
         <div className={classes.dialogs}>
