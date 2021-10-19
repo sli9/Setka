@@ -7,8 +7,8 @@ import {mapDispatchToPropsType, mapStateToPropsType} from "./DialogsContainer";
 type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
 
 const Dialogs = (props: DialogsPropsType) => {
-    let dialogsItem = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
-    let messagesItem = props.messages.map(message => <Message message={message.message}/>)
+    let dialogsItem = props.dialogs.map((d, i) => <DialogItem key={i} name={d.name} id={d.id}/>)
+    let messagesItem = props.messages.map((message, i) => <Message key={i} message={message.message}/>)
 
     const changeTextHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.ChangeMessage(e.currentTarget.value)

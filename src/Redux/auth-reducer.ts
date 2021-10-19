@@ -19,7 +19,10 @@ export type initialStateAuthType = {
 
 export type actionsTypes = ReturnType<typeof SetAuthUserData>
 
-const SetAuthUserData = (id: number, email: string, login: string) => ({type: 'SET-USER-DATA', data:{id, email, login}} as const)
+const SetAuthUserData = (id: number, email: string, login: string) => ({
+    type: 'SET-USER-DATA',
+    data: {id, email, login}
+} as const)
 
 export const getAuthUserData = () => (dispatch: Dispatch) => {
     authApi.me().then(response => {

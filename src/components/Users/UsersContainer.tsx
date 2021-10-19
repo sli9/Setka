@@ -6,10 +6,13 @@ import {
     getUsers,
     initialStateOfUsersType,
     setTotalUsersCount,
-    toggleFollowing, unFollow
+    toggleFollowing,
+    unFollow
 } from "../../Redux/users-reducer";
 import React from "react";
 import {Preloader} from "../common/Preloader";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
 class UsersContainer extends React.Component<mapDispatchToPropsType & initialStateOfUsersType> {
@@ -61,5 +64,7 @@ export type mapDispatchToPropsType = {
 }
 
 
-export default connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing})(UsersContainer)
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing}),
+    withAuthRedirect)(UsersContainer)
 
