@@ -21,6 +21,17 @@ export const usersApi = {
         return instance.post(`follow/${userId}`)
             .then(response => response.data)
     },
+    getProfile(userId: string) {// obsolete method, use profileApi
+        return profileApi.getProfile(userId)
+    },
+}
+export const profileApi = {
+    updateStatus(status: string) {
+        return instance.put(`profile/status`, {status})
+    },
+    getStatus(userId: string) {
+        return instance.get(`profile/status/${userId}`)
+    },
     getProfile(userId: string) {
         return instance.get(`profile/${userId}`)
             .then(response => response.data)

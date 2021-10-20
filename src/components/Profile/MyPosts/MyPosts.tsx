@@ -1,10 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {initialStateTypeofProfile} from "../../../Redux/profile-reducer";
-import {mapDispatchToPropsType} from "./MyPostsContainer";
+import {mapDispatchToPropsType, mapStateToPropsType} from "./MyPostsContainer";
 
-type PostsType = initialStateTypeofProfile & mapDispatchToPropsType
+type PostsType = mapStateToPropsType & mapDispatchToPropsType
 
 const MyPosts = (props: PostsType) => {
 
