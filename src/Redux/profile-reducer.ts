@@ -2,7 +2,6 @@ import {Dispatch} from "redux";
 import {profileApi, usersApi} from "../api/api";
 
 const initialState: initialStateTypeofProfile = {
-    newLetters: '',
     posts: [
         {message: 'Hi, how are you?', like: 5},
         {message: 'It\'s my first post', like: 2}
@@ -11,7 +10,6 @@ const initialState: initialStateTypeofProfile = {
     status: ''
 }
 export type initialStateTypeofProfile = {
-    newLetters: string
     posts: Array<postType>
     profile: profileType | null
     status: string
@@ -42,13 +40,13 @@ export type postType = {
     message: string
     like: number
 }
-type actionsTypes = ReturnType<typeof AddPost> |
-    ReturnType<typeof ChangeMessage> | ReturnType<typeof setUserProfile> |
-    ReturnType<typeof setStatus>
+type actionsTypes = ReturnType<typeof AddPost> | ReturnType<typeof setUserProfile>
+    | ReturnType<typeof setStatus>
 
-export const AddPost = () => {
+export const AddPost = (newPost: string) => {
     return {
-        type: 'ADD-POST'
+        type: 'ADD-POST',
+        newPost,
     } as const
 }
 
@@ -83,29 +81,17 @@ export const updateUserStatus = (status: string) => (dispatch: Dispatch) => {
     })
 }
 
-export const ChangeMessage = (letter: string) => {
-    return {
-        type: 'CHANGE-MESSAGE',
-        letter: letter
-    } as const
-}
 
 const ProfileReducer = (state: initialStateTypeofProfile = initialState, action: actionsTypes): initialStateTypeofProfile => {
     switch (action.type) {
         case "ADD-POST":
             const NewPost = {
-                message: state.newLetters,
+                message: action.newPost,
                 like: 0
             }
             return {
                 ...state,
                 posts: [NewPost, ...state.posts],
-                newLetters: ''
-            }
-        case "CHANGE-MESSAGE":
-            return {
-                ...state,
-                newLetters: action.letter
             }
         case "SET-USER-PROFILE":
             return {

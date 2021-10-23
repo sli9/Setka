@@ -8,7 +8,6 @@ type PropsType = {
     profile: profileType | null
     status: string
     updateStatus: (status: string) => void
-
 }
 
 const Profile = (props: PropsType) => {

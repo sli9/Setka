@@ -1,8 +1,9 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import classes from "./Dialogs.module.css"
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {mapDispatchToPropsType, mapStateToPropsType} from "./DialogsContainer";
+import DialogsReduxForm, {MessageFormType} from "./Message/DialogsForm";
 
 type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
 
@@ -10,11 +11,8 @@ const Dialogs = (props: DialogsPropsType) => {
     let dialogsItem = props.dialogs.map((d, i) => <DialogItem key={i} name={d.name} id={d.id}/>)
     let messagesItem = props.messages.map((message, i) => <Message key={i} message={message.message}/>)
 
-    const changeTextHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.ChangeMessage(e.currentTarget.value)
-    }
-    const addMessageHandler = () => {
-        props.AddMessage()
+    const addMessageHandler = (value: MessageFormType) => {
+        props.AddMessage(value.newMessage)
     }
 
     return (
@@ -24,15 +22,11 @@ const Dialogs = (props: DialogsPropsType) => {
             </div>
             <div className={classes.messages}>
                 {messagesItem}
-                <div>
-                    <textarea value={props.newMessageText} onChange={changeTextHandler}/>
-                </div>
-                <div>
-                    <button onClick={addMessageHandler}>Message</button>
-                </div>
+                <DialogsReduxForm onSubmit={addMessageHandler}/>
             </div>
         </div>
     )
 }
+
 
 export default Dialogs;

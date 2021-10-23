@@ -1,29 +1,20 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
 import {mapDispatchToPropsType, mapStateToPropsType} from "./MyPostsContainer";
+import PostReduxForm, {PostFormType} from "./Post/PostForm";
 
 type PostsType = mapStateToPropsType & mapDispatchToPropsType
 
 const MyPosts = (props: PostsType) => {
 
-    const PostHandler = () => {
-        props.AddPost()
-    }
-    const ChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.ChangeMessage(e.currentTarget.value)
+    const PostHandler = (values: PostFormType) => {
+        props.AddPost(values.newPost)
     }
 
     return <div className={classes.posts}>
         <h4>My posts</h4>
-        <div>
-            <div>
-                <textarea value={props.newLetters} onChange={ChangeHandler}/>
-            </div>
-            <div>
-                <button onClick={PostHandler}>Add post</button>
-            </div>
-        </div>
+        <PostReduxForm onSubmit={PostHandler}/>
         <div><h3>New post</h3></div>
         <div className={classes.posts}>
             {props.posts.map((p, i) => <Post key={i} message={p.message} like={p.like}/>)}

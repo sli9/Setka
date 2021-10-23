@@ -34,7 +34,6 @@ class ProfileContainer extends React.Component<PropsType> {
 }
 
 const mapStateToProps = (state: AppRootStoreType): initialStateTypeofProfile => ({
-    newLetters: state.profilePage.newLetters,
     posts: state.profilePage.posts,
     profile: state.profilePage.profile,
     status: state.profilePage.status
