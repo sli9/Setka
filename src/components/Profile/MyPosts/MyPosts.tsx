@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
 import {mapDispatchToPropsType, mapStateToPropsType} from "./MyPostsContainer";
-import PostReduxForm, {PostFormType} from "./Post/PostForm";
+import PostReduxForm, {PostFormType} from "./PostForm";
 
 type PostsType = mapStateToPropsType & mapDispatchToPropsType
 
