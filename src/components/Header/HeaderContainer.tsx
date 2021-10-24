@@ -1,5 +1,5 @@
 import React from 'react';
-import {getAuthUserData} from "../../Redux/auth-reducer";
+import {getAuthUserData, logout} from "../../Redux/auth-reducer";
 import {connect} from "react-redux";
 import Header from "./Header";
 import {AppRootStoreType} from "../../Redux/redux-store";
@@ -8,7 +8,6 @@ import {AppRootStoreType} from "../../Redux/redux-store";
 class HeaderContainer extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
 
     componentDidMount() {
-        // this.props.toggleFetching(true)
       this.props.getAuthUserData()
     }
 
@@ -25,8 +24,9 @@ const mapStateToProps = (state: AppRootStoreType) => {
         login: state.auth.login
     }
 }
-type mapDispatchToPropsType = {
-    getAuthUserData: () => void
+ export type mapDispatchToPropsType = {
+    getAuthUserData: () => void,
+    logout: () => void
 }
 
-export default connect(mapStateToProps, {getAuthUserData})(HeaderContainer)
+export default connect(mapStateToProps, {getAuthUserData, logout})(HeaderContainer)
