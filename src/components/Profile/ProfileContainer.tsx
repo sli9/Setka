@@ -33,10 +33,11 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 }
 
+
 const mapStateToProps = (state: AppRootStoreType): initialStateTypeofProfile => ({
     posts: state.profilePage.posts,
     profile: state.profilePage.profile,
-    status: state.profilePage.status
+    status: state.profilePage.status,
 })
 type mapDispatchType = {
     getUserProfile: (userId: string) => void
