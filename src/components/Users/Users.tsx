@@ -26,7 +26,7 @@ function Users(props: UsersType) {
             {pages.map((p, i) => <span key={i} className={props.currentPage === p ? classes.selectedPage : ''}
                                        onClick={() => {
                                            props.onChangePage(p)
-                                       }}>{p}</span>)}
+                                       }}>{` ${p}`}</span>)}
         </div>
 
         {props.users.map(u => <div key={u.id}>
