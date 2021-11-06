@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/Setka/static/css/main.1dc4d799.chunk.css",
+    "main.js": "/Setka/static/js/main.d63824a5.chunk.js",
+    "main.js.map": "/Setka/static/js/main.d63824a5.chunk.js.map",
+    "runtime-main.js": "/Setka/static/js/runtime-main.1e185f7e.js",
+    "runtime-main.js.map": "/Setka/static/js/runtime-main.1e185f7e.js.map",
+    "static/js/2.a8a8da19.chunk.js": "/Setka/static/js/2.a8a8da19.chunk.js",
+    "static/js/2.a8a8da19.chunk.js.map": "/Setka/static/js/2.a8a8da19.chunk.js.map",
+    "index.html": "/Setka/index.html",
+    "static/css/main.1dc4d799.chunk.css.map": "/Setka/static/css/main.1dc4d799.chunk.css.map",
+    "static/js/2.a8a8da19.chunk.js.LICENSE.txt": "/Setka/static/js/2.a8a8da19.chunk.js.LICENSE.txt",
+    "static/media/loading-loader-svgrepo-com.dc31ae37.svg": "/Setka/static/media/loading-loader-svgrepo-com.dc31ae37.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1e185f7e.js",
+    "static/js/2.a8a8da19.chunk.js",
+    "static/css/main.1dc4d799.chunk.css",
+    "static/js/main.d63824a5.chunk.js"
+  ]
+}
