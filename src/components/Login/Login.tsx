@@ -1,7 +1,7 @@
-import React from "react";
+import React, {FC} from "react";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../common/FormControls/FormControls";
-import {required} from "../../validators/validators";
+import {required} from "../../utilits/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../Redux/auth-reducer";
 import {AppRootStoreType} from "../../Redux/redux-store";
@@ -14,9 +14,9 @@ type FormDataType = {
     rememberMe: boolean
 }
 
-const LoginForm = (props: InjectedFormProps<FormDataType>) => {
+const LoginForm: FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <Field name={'email'} placeholder={'Email'} component={Input} validate={[required]}/>
             </div>
@@ -26,9 +26,9 @@ const LoginForm = (props: InjectedFormProps<FormDataType>) => {
             <div>
                 <Field name={'rememberMe'} type="checkbox" component={Input}/>Remember me
             </div>
-            {props.error &&
+            {error &&
             <div className={classes.groupError}>
-                {props.error}
+                {error}
             </div>}
             <div>
                 <button>Login</button>
@@ -41,11 +41,11 @@ const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
 
 
-const Login = (props: MapDispatchType & MapStateType) => {
+const Login: FC<MapDispatchType & MapStateType> = (isAuth) => {
     const onSubmit = (formData: FormDataType) => {
-        props.login(formData.email, formData.password, formData.rememberMe)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
+        login(formData.email, formData.password, formData.rememberMe)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
     }
-    if (props.isAuth) {return <Redirect to={'/profile'}/>}
+    if (isAuth) {return <Redirect to={'/profile'}/>}
     return <div>
         <h1>LOGIN</h1>
         <LoginReduxForm onSubmit={onSubmit}/>

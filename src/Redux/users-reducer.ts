@@ -43,43 +43,43 @@ type toggleFollowingType = ReturnType<typeof toggleFollowing>
 
 export const followSuccess = (userId: number) => {
     return {
-        type: 'FOLLOW',
+        type: 'users/FOLLOW',
         userId: userId
     } as const
 }
 export const unFollowSuccess = (userId: number) => {
     return {
-        type: 'UNFOLLOW',
+        type: 'users/UNFOLLOW',
         userId: userId
     } as const
 }
 export const setUsers = (users: Array<usersType>) => {
     return {
-        type: 'SET-USERS',
+        type: 'users/SET-USERS',
         users
     } as const
 }
 export const setCurrentPage = (currentPage: number) => {
     return {
-        type: 'SET-CURRENT-PAGE',
+        type: 'users/SET-CURRENT-PAGE',
         currentPage
     } as const
 }
 export const setTotalUsersCount = (totalCount: number) => {
     return {
-        type: 'SET-TOTAL-USERS-COUNT',
+        type: 'users/SET-TOTAL-USERS-COUNT',
         totalCount
     } as const
 }
 export const toggleFetching = (fetching: boolean) => {
     return {
-        type: 'TOGGLE-FETCHING',
+        type: 'users/TOGGLE-FETCHING',
         fetching
     } as const
 }
 export const toggleFollowing = (fetching: boolean, userId: number) => {
     return {
-        type: 'TOGGLE-FOLLOWING',
+        type: 'users/TOGGLE-FOLLOWING',
         fetching,
         userId
     } as const
@@ -87,33 +87,33 @@ export const toggleFollowing = (fetching: boolean, userId: number) => {
 
 const UsersReducer = (state = initialState, action: actionsTypes): initialStateOfUsersType => {
     switch (action.type) {
-        case 'FOLLOW':
+        case 'users/FOLLOW':
             return {
                 ...state,
                 users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)
             }
-        case 'UNFOLLOW':
+        case 'users/UNFOLLOW':
             return {
                 ...state,
                 users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)
             }
-        case 'SET-USERS':
+        case 'users/SET-USERS':
             return {
                 ...state, users: action.users
             }
-        case 'SET-CURRENT-PAGE':
+        case 'users/SET-CURRENT-PAGE':
             return {
                 ...state, currentPage: action.currentPage
             }
-        case 'SET-TOTAL-USERS-COUNT':
+        case 'users/SET-TOTAL-USERS-COUNT':
             return {
                 ...state, totalUsers: action.totalCount
             }
-        case 'TOGGLE-FETCHING':
+        case 'users/TOGGLE-FETCHING':
             return {
                 ...state, isFetching: action.fetching
             }
-        case 'TOGGLE-FOLLOWING':
+        case 'users/TOGGLE-FOLLOWING':
             return {
                 ...state,
                 followingInProgress: action.fetching
@@ -126,7 +126,7 @@ const UsersReducer = (state = initialState, action: actionsTypes): initialStateO
 }
 
 export const getUsers = (currentPage: number, pageSize: number) => {
-    return (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch) => {
         dispatch(toggleFetching(true))
         usersApi.getUsers(currentPage, pageSize).then(data => {
             dispatch(toggleFetching(false))

@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './ProfileInfo.module.css'
 import {profileType} from "../../../Redux/profile-reducer";
 import {Preloader} from "../../common/Preloader";
-import ProfileStatus from "./ProfileStatus";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 
 type PropsType = {
@@ -12,7 +11,7 @@ type PropsType = {
 }
 
 const ProfileInfo = (props: PropsType) => {
-    if (!props.profile){ //if props.profile === nul || props.profile === undefind
+    if (!props.profile) { //if props.profile === nul || props.profile === undefind
         return <Preloader/>
     }
     return <div className={classes.content}>
@@ -23,7 +22,7 @@ const ProfileInfo = (props: PropsType) => {
             <img src={props.profile.photos.large !== null ? props.profile.photos.large : ''} alt='yps'/>
         </div>
         <div>
-            <ProfileStatusWithHooks status={props.status} updateUserStatus={props.updateStatus} />
+            <ProfileStatusWithHooks status={props.status} updateUserStatus={props.updateStatus}/>
         </div>
     </div>
 

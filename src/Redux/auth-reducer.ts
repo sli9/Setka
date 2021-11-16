@@ -21,22 +21,20 @@ export type initialStateAuthType = {
 export type actionsTypes = ReturnType<typeof SetAuthUserData> | FormAction
 
 const SetAuthUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
-    type: 'SET-USER-DATA',
+    type: 'auth/SET-USER-DATA',
     payload: {id, email, login, isAuth},
 } as const)
 
-export const getAuthUserData = () => (dispatch: Dispatch) => {
-    return authApi.me().then(response => {
-        console.log(response.data.resultCode)
+export const getAuthUserData = () => async (dispatch: Dispatch) => {
+    const response = await authApi.me()
         if (response.data.resultCode === 0) {
             let {id, email, login} = response.data.data
             dispatch(SetAuthUserData(id, email, login, true))
         }
-    })
 }
 export const login = (email: string, password: string, rememberMe: boolean) =>
-    (dispatch: ThunkDispatch<AppRootStoreType, unknown, actionsTypes>) => {
-        authApi.login(email, password, rememberMe).then(response => {
+    async (dispatch: ThunkDispatch<AppRootStoreType, unknown, actionsTypes>) => {
+        const response = await authApi.login(email, password, rememberMe)
             if (response.data.resultCode === 0) {
                 dispatch(getAuthUserData())
             } else {
@@ -44,21 +42,19 @@ export const login = (email: string, password: string, rememberMe: boolean) =>
                 const formAction = stopSubmit('login', {_error: message});
                 dispatch(formAction)
             }
-        })
     }
-export const logout = () => (dispatch: Dispatch) => {
-    authApi.logout().then(response => {
+export const logout = () => async (dispatch: Dispatch) => {
+    const response = await authApi.logout()
         if (response.data.resultCode === 0) {
             dispatch(SetAuthUserData(null, null, null, false))
         }
-    })
 }
 
 
 const AuthReducer = (state: initialStateAuthType = initialState, action: actionsTypes): initialStateAuthType => {
 
     switch (action.type) {
-        case 'SET-USER-DATA':
+        case 'auth/SET-USER-DATA':
             return {
                 ...state,
                 ...action.payload,

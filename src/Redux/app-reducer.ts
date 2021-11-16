@@ -13,7 +13,7 @@ export type initialStateAppType = {
 
 export type actionsTypes = ReturnType<typeof InitializedSuccess> | FormAction
 
-const InitializedSuccess = () => ({type: 'INITIALIZED-SUCCESS'} as const)
+const InitializedSuccess = () => ({type: 'app/INITIALIZED-SUCCESS'} as const)
 
 export const initializeApp = () => (dispatch: ThunkDispatch<AppRootStoreType, unknown, actionsTypes>) => {
     dispatch(getAuthUserData()).then(() => {
@@ -25,7 +25,7 @@ export const initializeApp = () => (dispatch: ThunkDispatch<AppRootStoreType, un
 const AppReducer = (state: initialStateAppType = initialState, action: actionsTypes): initialStateAppType => {
 
     switch (action.type) {
-        case 'INITIALIZED-SUCCESS':
+        case 'app/INITIALIZED-SUCCESS':
             return {
                 ...state,
                 initialized: true,

@@ -6,7 +6,7 @@ import PostReduxForm, {PostFormType} from "./PostForm";
 
 type PostsType = mapStateToPropsType & mapDispatchToPropsType
 
-const MyPosts = (props: PostsType) => {
+const MyPosts = React.memo((props: PostsType) => {
 
     const PostHandler = (values: PostFormType) => {
         props.AddPost(values.newPost)
@@ -21,6 +21,6 @@ const MyPosts = (props: PostsType) => {
         </div>
     </div>
 
-}
+})
 
 export default MyPosts;

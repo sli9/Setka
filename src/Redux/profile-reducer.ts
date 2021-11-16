@@ -45,46 +45,43 @@ type actionsTypes = ReturnType<typeof AddPost> | ReturnType<typeof setUserProfil
 
 export const AddPost = (newPost: string) => {
     return {
-        type: 'ADD-POST',
+        type: 'profile/ADD-POST',
         newPost,
     } as const
 }
 
 export const setUserProfile = (profile: profileType) => {
     return {
-        type: 'SET-USER-PROFILE',
+        type: 'profile/SET-USER-PROFILE',
         profile
     } as const
 }
-export const getUserProfile = (userId: string) => (dispatch: Dispatch) => {
-    usersApi.getProfile(userId).then(data => {
+export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
+    const data = await usersApi.getProfile(userId)
         dispatch(setUserProfile(data))
-    })
 }
 
 export const setStatus = (status: string) => {
     return {
-        type: 'SET-USER-STATUS',
+        type: 'profile/SET-USER-STATUS',
         status
     } as const
 }
-export const getUserStatus = (userId: string) => (dispatch: Dispatch) => {
-    profileApi.getStatus(userId).then(response=>{
+export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
+    const response = await profileApi.getStatus(userId)
         dispatch(setStatus(response.data))
-    })
 }
-export const updateUserStatus = (status: string) => (dispatch: Dispatch) => {
-    profileApi.updateStatus(status).then(response=>{
+export const updateUserStatus = (status: string) => async (dispatch: Dispatch) => {
+    const response = await profileApi.updateStatus(status)
         if (response.data.resultCode === 0) {
             dispatch(setStatus(status))
         }
-    })
 }
 
 
 const ProfileReducer = (state: initialStateTypeofProfile = initialState, action: actionsTypes): initialStateTypeofProfile => {
     switch (action.type) {
-        case "ADD-POST":
+        case "profile/ADD-POST":
             const NewPost = {
                 message: action.newPost,
                 like: 0
@@ -93,12 +90,12 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
                 ...state,
                 posts: [NewPost, ...state.posts],
             }
-        case "SET-USER-PROFILE":
+        case "profile/SET-USER-PROFILE":
             return {
                 ...state,
                 profile: action.profile
             }
-        case "SET-USER-STATUS":
+        case "profile/SET-USER-STATUS":
             return {
                 ...state,
                 status: action.status

@@ -28,7 +28,7 @@ export type actionsTypes = ReturnType<typeof AddMessageTextAC>
 
 export const AddMessageTextAC = (newMessage: string) => {
     return {
-        type: 'ADD-MESSAGE-TEXT',
+        type: 'dialogs/ADD-MESSAGE-TEXT',
         newMessage,
 
     } as const
@@ -37,7 +37,7 @@ export const AddMessageTextAC = (newMessage: string) => {
 const DialogsReducer = (state: initialStateTypeofDialogs = initialState, action: actionsTypes): initialStateTypeofDialogs => {
 
     switch (action.type) {
-        case "ADD-MESSAGE-TEXT":
+        case "dialogs/ADD-MESSAGE-TEXT":
             const NewMessage = {
                 id: '6',
                 message: action.newMessage,
