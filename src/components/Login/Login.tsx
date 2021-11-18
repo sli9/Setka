@@ -41,11 +41,11 @@ const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
 
 
-const Login: FC<MapDispatchType & MapStateType> = (isAuth) => {
+const Login = (props: MapDispatchType & MapStateType) => {
     const onSubmit = (formData: FormDataType) => {
-        login(formData.email, formData.password, formData.rememberMe)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
+        props.login(formData.email, formData.password, formData.rememberMe)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
     }
-    if (isAuth) {return <Redirect to={'/profile'}/>}
+    if (props.isAuth) {return <Redirect to={'/profile'}/>}
     return <div>
         <h1>LOGIN</h1>
         <LoginReduxForm onSubmit={onSubmit}/>
