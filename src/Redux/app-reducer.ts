@@ -16,7 +16,8 @@ export type actionsTypes = ReturnType<typeof InitializedSuccess> | FormAction
 const InitializedSuccess = () => ({type: 'app/INITIALIZED-SUCCESS'} as const)
 
 export const initializeApp = () => (dispatch: ThunkDispatch<AppRootStoreType, unknown, actionsTypes>) => {
-    dispatch(getAuthUserData()).then(() => {
+   const pr = dispatch(getAuthUserData())
+       Promise.all([pr]).then(() => {
         dispatch(InitializedSuccess())
     })
 }

@@ -7,7 +7,7 @@ import {HashRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 
 
-function RenderTree() {
+// function RenderTree() {
     ReactDOM.render(
         <React.StrictMode>
             <HashRouter>
@@ -18,9 +18,9 @@ function RenderTree() {
         </React.StrictMode>,
         document.getElementById('root')
     );
-}
+// }
 
-export default RenderTree;
+// export default RenderTree;
 
-RenderTree();
-store.subscribe(() => RenderTree())
+// RenderTree();
+// store.subscribe(() => RenderTree())

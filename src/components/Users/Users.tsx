@@ -20,7 +20,8 @@ function Users(props: UsersType) {
         <Paginator currentPage={props.currentPage}
                    totalUsers={props.totalUsers}
                    pageSize={props.pageSize}
-                   onChangePage={props.onChangePage}/>
+                   onChangePage={props.onChangePage}
+                   portion={10}/>
 
         {props.users.map(u => <User key={u.id}
                                     followingInProgress={props.followingInProgress}

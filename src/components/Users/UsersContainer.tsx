@@ -72,6 +72,7 @@ export type mapDispatchToPropsType = {
 
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing}),
-    withAuthRedirect)(UsersContainer)
+
+    connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing})
+    )(UsersContainer)
 

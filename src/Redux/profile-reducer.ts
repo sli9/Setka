@@ -3,12 +3,14 @@ import {profileApi, usersApi} from "../api/api";
 
 const initialState: initialStateTypeofProfile = {
     posts: [
-        {message: 'Hi, how are you?', like: 5},
-        {message: 'It\'s my first post', like: 2}
+        {id: 1, message: 'Hi, how are you?', like: 5},
+        {id: 2, message: 'It\'s my first post', like: 2}
     ],
     profile: null,
     status: ''
 }
+let idNumber = 2;
+
 export type initialStateTypeofProfile = {
     posts: Array<postType>
     profile: profileType | null
@@ -37,16 +39,27 @@ type contactsType = {
     mainLink: null | string
 }
 export type postType = {
+    id: number
     message: string
     like: number
 }
-type actionsTypes = ReturnType<typeof AddPost> | ReturnType<typeof setUserProfile>
+type actionsTypes =
+    | ReturnType<typeof AddPost>
+    | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
+    | ReturnType<typeof DeletePost>
 
 export const AddPost = (newPost: string) => {
+    idNumber = idNumber + 1
     return {
         type: 'profile/ADD-POST',
         newPost,
+    } as const
+}
+export const DeletePost = (postId: number) => {
+    return {
+        type: 'profile/DELETE-POST',
+        postId,
     } as const
 }
 
@@ -58,7 +71,7 @@ export const setUserProfile = (profile: profileType) => {
 }
 export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
     const data = await usersApi.getProfile(userId)
-        dispatch(setUserProfile(data))
+    dispatch(setUserProfile(data))
 }
 
 export const setStatus = (status: string) => {
@@ -69,13 +82,13 @@ export const setStatus = (status: string) => {
 }
 export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
     const response = await profileApi.getStatus(userId)
-        dispatch(setStatus(response.data))
+    dispatch(setStatus(response.data))
 }
 export const updateUserStatus = (status: string) => async (dispatch: Dispatch) => {
     const response = await profileApi.updateStatus(status)
-        if (response.data.resultCode === 0) {
-            dispatch(setStatus(status))
-        }
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
 }
 
 
@@ -83,12 +96,18 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
     switch (action.type) {
         case "profile/ADD-POST":
             const NewPost = {
+                id: idNumber,
                 message: action.newPost,
                 like: 0
             }
             return {
                 ...state,
                 posts: [NewPost, ...state.posts],
+            }
+        case "profile/DELETE-POST":
+            return {
+                ...state,
+                posts: state.posts.filter(post=> post.id !== action.postId),
             }
         case "profile/SET-USER-PROFILE":
             return {

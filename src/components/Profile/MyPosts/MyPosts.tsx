@@ -17,7 +17,7 @@ const MyPosts = React.memo((props: PostsType) => {
         <PostReduxForm onSubmit={PostHandler}/>
         <div><h3>New post</h3></div>
         <div className={classes.posts}>
-            {props.posts.map((p, i) => <Post key={i} message={p.message} like={p.like}/>)}
+            {props.posts.map((p, i) => <Post key={i} id={p.id} message={p.message} like={p.like}/>)}
         </div>
     </div>
 

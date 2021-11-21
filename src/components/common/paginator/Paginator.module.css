@@ -1,3 +1,14 @@
+
+.paginator {
+    margin: 10px;
+}
+
+.pageNumber {
+    padding: 2px;
+    border: 1px solid black;
+}
+
 .selectedPage {
     font-size: larger;
+    border: 3px solid white;
 }
