@@ -1,21 +1,29 @@
 {
   "files": {
-    "main.css": "/Setka/static/css/main.1dc4d799.chunk.css",
-    "main.js": "/Setka/static/js/main.a2fa58f8.chunk.js",
-    "main.js.map": "/Setka/static/js/main.a2fa58f8.chunk.js.map",
-    "runtime-main.js": "/Setka/static/js/runtime-main.1e185f7e.js",
-    "runtime-main.js.map": "/Setka/static/js/runtime-main.1e185f7e.js.map",
-    "static/js/2.9b106d28.chunk.js": "/Setka/static/js/2.9b106d28.chunk.js",
-    "static/js/2.9b106d28.chunk.js.map": "/Setka/static/js/2.9b106d28.chunk.js.map",
+    "main.css": "/Setka/static/css/main.bd82ac18.chunk.css",
+    "main.js": "/Setka/static/js/main.62bcbb37.chunk.js",
+    "main.js.map": "/Setka/static/js/main.62bcbb37.chunk.js.map",
+    "runtime-main.js": "/Setka/static/js/runtime-main.84c090e5.js",
+    "runtime-main.js.map": "/Setka/static/js/runtime-main.84c090e5.js.map",
+    "static/js/2.24336804.chunk.js": "/Setka/static/js/2.24336804.chunk.js",
+    "static/js/2.24336804.chunk.js.map": "/Setka/static/js/2.24336804.chunk.js.map",
+    "static/css/3.fefd4d0f.chunk.css": "/Setka/static/css/3.fefd4d0f.chunk.css",
+    "static/js/3.6f1f7af1.chunk.js": "/Setka/static/js/3.6f1f7af1.chunk.js",
+    "static/js/3.6f1f7af1.chunk.js.map": "/Setka/static/js/3.6f1f7af1.chunk.js.map",
+    "static/css/4.ce0a01f3.chunk.css": "/Setka/static/css/4.ce0a01f3.chunk.css",
+    "static/js/4.34814c1f.chunk.js": "/Setka/static/js/4.34814c1f.chunk.js",
+    "static/js/4.34814c1f.chunk.js.map": "/Setka/static/js/4.34814c1f.chunk.js.map",
     "index.html": "/Setka/index.html",
-    "static/css/main.1dc4d799.chunk.css.map": "/Setka/static/css/main.1dc4d799.chunk.css.map",
-    "static/js/2.9b106d28.chunk.js.LICENSE.txt": "/Setka/static/js/2.9b106d28.chunk.js.LICENSE.txt",
+    "static/css/3.fefd4d0f.chunk.css.map": "/Setka/static/css/3.fefd4d0f.chunk.css.map",
+    "static/css/4.ce0a01f3.chunk.css.map": "/Setka/static/css/4.ce0a01f3.chunk.css.map",
+    "static/css/main.bd82ac18.chunk.css.map": "/Setka/static/css/main.bd82ac18.chunk.css.map",
+    "static/js/2.24336804.chunk.js.LICENSE.txt": "/Setka/static/js/2.24336804.chunk.js.LICENSE.txt",
     "static/media/loading-loader-svgrepo-com.dc31ae37.svg": "/Setka/static/media/loading-loader-svgrepo-com.dc31ae37.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.1e185f7e.js",
-    "static/js/2.9b106d28.chunk.js",
-    "static/css/main.1dc4d799.chunk.css",
-    "static/js/main.a2fa58f8.chunk.js"
+    "static/js/runtime-main.84c090e5.js",
+    "static/js/2.24336804.chunk.js",
+    "static/css/main.bd82ac18.chunk.css",
+    "static/js/main.62bcbb37.chunk.js"
   ]
 }
