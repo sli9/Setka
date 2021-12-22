@@ -5,3 +5,7 @@
 .content .back img {
     width: 70em;
 }
+
+.ava {
+    max-width: 200px;
+}

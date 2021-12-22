@@ -6,19 +6,37 @@ const initialState: initialStateTypeofProfile = {
         {id: 1, message: 'Hi, how are you?', like: 5},
         {id: 2, message: 'It\'s my first post', like: 2}
     ],
-    profile: null,
+    profile: {userId: 1,
+        aboutMe: '',
+        contacts: {
+            facebook: null,
+            website: null ,
+            vk: null,
+            twitter: null,
+            instagram: null,
+            youtube: null,
+            github: null,
+            mainLink: null,
+        },
+        lookingForAJob: false,
+        lookingForAJobDescription: null,
+        fullName: '',
+        photos: {
+            small: null,
+            large: null
+        }},
     status: ''
 }
 let idNumber = 2;
 
 export type initialStateTypeofProfile = {
     posts: Array<postType>
-    profile: profileType | null
+    profile: profileType
     status: string
 }
 export type profileType = {
     userId: number
-    aboutMe: string,
+    aboutMe: string
     contacts: contactsType
     lookingForAJob: boolean
     lookingForAJobDescription: string | null
@@ -48,6 +66,7 @@ type actionsTypes =
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
     | ReturnType<typeof DeletePost>
+    | ReturnType<typeof setOwnerPhoto>
 
 export const AddPost = (newPost: string) => {
     idNumber = idNumber + 1
@@ -62,24 +81,39 @@ export const DeletePost = (postId: number) => {
         postId,
     } as const
 }
-
 export const setUserProfile = (profile: profileType) => {
     return {
         type: 'profile/SET-USER-PROFILE',
         profile
     } as const
 }
-export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
-    const data = await usersApi.getProfile(userId)
-    dispatch(setUserProfile(data))
-}
-
 export const setStatus = (status: string) => {
     return {
         type: 'profile/SET-USER-STATUS',
         status
     } as const
 }
+const setOwnerPhoto = (photos: {small: string | null, large: null | string }) => {
+    return {
+        type: 'profile/SET-OWNER-PHOTO',
+        photos
+    } as const
+}
+
+//thunks
+export const saveAva = (ava: File) => async (dispatch: Dispatch) => {
+    const response = await profileApi.saveAva(ava)
+    if (response.data.resultCode === 0) {
+        dispatch(setOwnerPhoto(response.data.photos))
+    }
+}
+
+export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
+    const data = await usersApi.getProfile(userId)
+    dispatch(setUserProfile(data))
+}
+
+
 export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
     const response = await profileApi.getStatus(userId)
     dispatch(setStatus(response.data))
@@ -107,7 +141,7 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
         case "profile/DELETE-POST":
             return {
                 ...state,
-                posts: state.posts.filter(post=> post.id !== action.postId),
+                posts: state.posts.filter(post => post.id !== action.postId),
             }
         case "profile/SET-USER-PROFILE":
             return {
@@ -118,6 +152,11 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
             return {
                 ...state,
                 status: action.status
+            }
+            case "profile/SET-OWNER-PHOTO":
+            return {
+                ...state,
+                profile: {...state.profile, photos: action.photos}
             }
         default:
             return state
