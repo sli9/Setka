@@ -5,7 +5,27 @@ const state = {
         {id: 1, message: 'Hi, how are you?', like: 5},
         {id: 2, message: 'It\'s my first post', like: 2}
     ],
-    profile: null,
+    profile: {
+        userId: 1,
+        aboutMe: '',
+        contacts: {
+            facebook: '',
+            website: '',
+            vk: '',
+            twitter: '',
+            instagram: '',
+            youtube: '',
+            github: '',
+            mainLink: '',
+        },
+        lookingForAJob: false,
+        lookingForAJobDescription: null,
+        fullName: '',
+        photos: {
+            small: null,
+            large: null
+        }
+    },
     status: ''
 }
 

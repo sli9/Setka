@@ -25,7 +25,8 @@ const ProfileStatusWithHooks: FC<ProfileStatusType> = ({status, updateUserStatus
     }
     return (
         <div>
-            {!editMode ? <span onDoubleClick={activateEditMode}>{status || '-------'}</span> :
+            {!editMode ?
+                 <span onDoubleClick={activateEditMode}><b>Status</b>: {status || '-------'}</span> :
                 <input type="text" value={newStatus}
                        autoFocus={true} onBlur={deactivateEditMode}
                        onChange={onStatusChange}/>}

@@ -1,6 +1,6 @@
 import React, {FC} from "react";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormControls/FormControls";
+import {InjectedFormProps, reduxForm} from "redux-form";
+import {createField, Input} from "../common/FormControls/FormControls";
 import {required} from "../../utilits/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../Redux/auth-reducer";
@@ -13,39 +13,44 @@ type FormDataType = {
     password: string
     rememberMe: boolean
 }
+type FormDataKeysType = keyof FormDataType // 'email', 'password', 'rememberMe'
+
 
 const LoginForm: FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
-    return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <Field name={'email'} placeholder={'Email'} component={Input} validate={[required]}/>
-            </div>
-            <div>
-                <Field name={'password'}  placeholder={'Password'} type={'password'} component={Input} validate={[required]}/>
-            </div>
-            <div>
-                <Field name={'rememberMe'} type="checkbox" component={Input}/>Remember me
-            </div>
-            {error &&
-            <div className={classes.groupError}>
-                {error}
-            </div>}
-            <div>
-                <button>Login</button>
-            </div>
-        </form>
-    )
+    return <form onSubmit={handleSubmit}>
+
+        {/*<div>*/}
+        {/*    <Field name={'email'} placeholder={'Email'} component={Input} validate={[required]}/>*/}
+        {/*</div>*/}
+        {/*<div>*/}
+        {/*    <Field name={'password'} placeholder={'Password'} type={'password'} component={Input}*/}
+        {/*           validate={[required]}/>*/}
+        {/*</div>*/}
+        {/*<div>*/}
+        {/*    <Field name={'rememberMe'} type="checkbox" component={Input}/>Remember me*/}
+        {/*</div>*/}
+
+        {createField<FormDataKeysType>('Email', 'email', [required], Input)}
+        {createField<FormDataKeysType>('Password', 'password', [required], Input, {type: 'password'})}
+        {createField<FormDataKeysType>('Password', 'rememberMe', [], Input, {type: 'checkbox'})}
+
+        {error && <div className={classes.groupError}>{error}</div>}
+        <div>
+            <button>Login</button>
+        </div>
+    </form>
 }
 
 const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
-
 
 
 const Login = (props: MapDispatchType & MapStateType) => {
     const onSubmit = (formData: FormDataType) => {
         props.login(formData.email, formData.password, formData.rememberMe)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
     }
-    if (props.isAuth) {return <Redirect to={'/profile'}/>}
+    if (props.isAuth) {
+        return <Redirect to={'/profile'}/>
+    }
     return <div>
         <h1>LOGIN</h1>
         <LoginReduxForm onSubmit={onSubmit}/>

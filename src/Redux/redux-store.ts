@@ -1,9 +1,9 @@
-import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {Action, applyMiddleware, combineReducers, compose, createStore} from "redux";
 import ProfileReducer from "./profile-reducer";
 import DialogsReducer from "./dialogs-reducer";
 import UsersReducer from "./users-reducer";
 import AuthReducer from "./auth-reducer";
-import thunkMiddleware from "redux-thunk";
+import thunkMiddleware, {ThunkAction} from "redux-thunk";
 import {reducer as formReducer} from 'redux-form'
 import AppReducer from "./app-reducer";
 
@@ -16,6 +16,9 @@ const rootReducer = combineReducers({
     app: AppReducer,
 })
 
+export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
+
+export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppRootStoreType, unknown, A>
 //for extension chrome redux DevTools
 //@ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

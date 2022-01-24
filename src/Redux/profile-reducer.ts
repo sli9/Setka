@@ -1,22 +1,26 @@
 import {Dispatch} from "redux";
 import {profileApi, usersApi} from "../api/api";
+import {BaseThunkType, InferActionsTypes} from "./redux-store";
+import {FormAction, stopSubmit} from "redux-form";
+
 
 const initialState: initialStateTypeofProfile = {
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 5},
         {id: 2, message: 'It\'s my first post', like: 2}
     ],
-    profile: {userId: 1,
+    profile: {
+        userId: 1,
         aboutMe: '',
         contacts: {
-            facebook: null,
-            website: null ,
-            vk: null,
-            twitter: null,
-            instagram: null,
-            youtube: null,
-            github: null,
-            mainLink: null,
+            facebook: '',
+            website: '',
+            vk: '',
+            twitter: '',
+            instagram: '',
+            youtube: '',
+            github: '',
+            mainLink: '',
         },
         lookingForAJob: false,
         lookingForAJobDescription: null,
@@ -24,7 +28,8 @@ const initialState: initialStateTypeofProfile = {
         photos: {
             small: null,
             large: null
-        }},
+        }
+    },
     status: ''
 }
 let idNumber = 2;
@@ -46,92 +51,95 @@ export type profileType = {
         large: null | string
     }
 }
-type contactsType = {
-    facebook: null | string
-    website: null | string,
-    vk: null | string
-    twitter: null | string
-    instagram: null | string
-    youtube: null | string
-    github: null | string
-    mainLink: null | string
+
+export type contactsType = {
+    facebook: string
+    website: string,
+    vk: string
+    twitter: string
+    instagram: string
+    youtube: string
+    github: string
+    mainLink: string
 }
 export type postType = {
     id: number
     message: string
     like: number
 }
-type actionsTypes =
-    | ReturnType<typeof AddPost>
-    | ReturnType<typeof setUserProfile>
-    | ReturnType<typeof setStatus>
-    | ReturnType<typeof DeletePost>
-    | ReturnType<typeof setOwnerPhoto>
 
-export const AddPost = (newPost: string) => {
-    idNumber = idNumber + 1
-    return {
-        type: 'profile/ADD-POST',
-        newPost,
-    } as const
-}
-export const DeletePost = (postId: number) => {
-    return {
+export const actions = {
+    addPost: (newPost: string) => {
+        idNumber = idNumber + 1
+        return {
+            type: 'profile/ADD-POST',
+            payload: {newPost},
+        } as const
+    },
+    DeletePost: (postId: number) => ({
         type: 'profile/DELETE-POST',
-        postId,
-    } as const
-}
-export const setUserProfile = (profile: profileType) => {
-    return {
+        payload: {postId},
+    } as const),
+    setUserProfile: (profile: profileType) => ({
         type: 'profile/SET-USER-PROFILE',
         profile
-    } as const
-}
-export const setStatus = (status: string) => {
-    return {
+    } as const),
+    setStatus: (status: string) => ({
         type: 'profile/SET-USER-STATUS',
         status
-    } as const
-}
-const setOwnerPhoto = (photos: {small: string | null, large: null | string }) => {
-    return {
+    } as const),
+    setOwnerPhoto: (photos: { small: string | null, large: null | string }) => ({
         type: 'profile/SET-OWNER-PHOTO',
         photos
-    } as const
+    } as const)
 }
+type ActionsType = InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsType | FormAction>
 
 //thunks
 export const saveAva = (ava: File) => async (dispatch: Dispatch) => {
     const response = await profileApi.saveAva(ava)
     if (response.data.resultCode === 0) {
-        dispatch(setOwnerPhoto(response.data.photos))
+        dispatch(actions.setOwnerPhoto(response.data.data.photos))
+    }
+}
+
+export const saveProfile = (profile: profileType): ThunkType => async (dispatch,
+                                                                       getState) => {
+    const userId = JSON.stringify(getState().auth.id)
+    const response = await profileApi.saveProfile(profile)
+    if (response.data.resultCode === 0) {
+        dispatch(getUserProfile(userId))
+    } else {
+        const error = response.data.messages.length > 0 ? response.data.messages[0] : 'Something wrong'
+        dispatch(stopSubmit('edit-profile-form', {_error: error}))
     }
 }
 
 export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
     const data = await usersApi.getProfile(userId)
-    dispatch(setUserProfile(data))
+    dispatch(actions.setUserProfile(data))
 }
-
 
 export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
     const response = await profileApi.getStatus(userId)
-    dispatch(setStatus(response.data))
+    dispatch(actions.setStatus(response.data))
 }
 export const updateUserStatus = (status: string) => async (dispatch: Dispatch) => {
     const response = await profileApi.updateStatus(status)
     if (response.data.resultCode === 0) {
-        dispatch(setStatus(status))
+        dispatch(actions.setStatus(status))
     }
 }
 
 
-const ProfileReducer = (state: initialStateTypeofProfile = initialState, action: actionsTypes): initialStateTypeofProfile => {
+const ProfileReducer = (state: initialStateTypeofProfile = initialState, action: ActionsType): initialStateTypeofProfile => {
     switch (action.type) {
         case "profile/ADD-POST":
+
             const NewPost = {
                 id: idNumber,
-                message: action.newPost,
+                message: action.payload.newPost,
                 like: 0
             }
             return {
@@ -141,7 +149,7 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
         case "profile/DELETE-POST":
             return {
                 ...state,
-                posts: state.posts.filter(post => post.id !== action.postId),
+                posts: state.posts.filter(post => post.id !== action.payload.postId),
             }
         case "profile/SET-USER-PROFILE":
             return {
@@ -153,7 +161,7 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
                 ...state,
                 status: action.status
             }
-            case "profile/SET-OWNER-PHOTO":
+        case "profile/SET-OWNER-PHOTO":
             return {
                 ...state,
                 profile: {...state.profile, photos: action.photos}
