@@ -38,11 +38,11 @@ export function createField<FormKeys extends string>(placeholder: string,
                                                      text = '') {
 
     return <div>
-        <Field placeholder={placeholder}
+        {text} <Field placeholder={placeholder}
                name={name}
                validate={validators}
                component={component}
                {...props}
-        /> {text}
+        />
     </div>
 }

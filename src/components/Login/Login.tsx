@@ -12,11 +12,18 @@ type FormDataType = {
     email: string
     password: string
     rememberMe: boolean
+    captcha: string
 }
 type FormDataKeysType = keyof FormDataType // 'email', 'password', 'rememberMe'
 
+type FormOwnDataType = { captchaUrl: string | null }
 
-const LoginForm: FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
+
+const LoginForm: FC<InjectedFormProps<FormDataType, FormOwnDataType> & FormOwnDataType> = ({
+                                                                                               handleSubmit,
+                                                                                               error,
+                                                                                               captchaUrl
+                                                                                           }) => {
     return <form onSubmit={handleSubmit}>
 
         {/*<div>*/}
@@ -30,9 +37,13 @@ const LoginForm: FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) =
         {/*    <Field name={'rememberMe'} type="checkbox" component={Input}/>Remember me*/}
         {/*</div>*/}
 
+        {/*using createField helper*/}
         {createField<FormDataKeysType>('Email', 'email', [required], Input)}
         {createField<FormDataKeysType>('Password', 'password', [required], Input, {type: 'password'})}
-        {createField<FormDataKeysType>('Password', 'rememberMe', [], Input, {type: 'checkbox'})}
+        {createField<FormDataKeysType>('Password', 'rememberMe', [], Input, {type: 'checkbox'}, 'remember me')}
+
+        {captchaUrl && <img src={captchaUrl} alt={'yps'}/>}
+        {captchaUrl && createField<FormDataKeysType>('Symbols from captcha', 'captcha', [required], Input)}
 
         {error && <div className={classes.groupError}>{error}</div>}
         <div>
@@ -41,31 +52,33 @@ const LoginForm: FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) =
     </form>
 }
 
-const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<FormDataType, FormOwnDataType>({form: 'login'})(LoginForm)
 
 
 const Login = (props: MapDispatchType & MapStateType) => {
     const onSubmit = (formData: FormDataType) => {
-        props.login(formData.email, formData.password, formData.rememberMe)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
     }
     if (props.isAuth) {
         return <Redirect to={'/profile'}/>
     }
     return <div>
         <h1>LOGIN</h1>
-        <LoginReduxForm onSubmit={onSubmit}/>
+        <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
     </div>
 }
 
 type MapDispatchType = {
-    login: (email: string, password: string, rememberMe: boolean) => void
+    login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
 }
 type MapStateType = {
     isAuth: boolean
+    captchaUrl: string | null
 }
 const mapStateToProps = (state: AppRootStoreType) => {
     return {
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        captchaUrl: state.auth.captchaUrl,
     }
 }
 export default connect(mapStateToProps, {login})(Login)
