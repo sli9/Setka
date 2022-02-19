@@ -1,7 +1,8 @@
 import {Dispatch} from "redux";
-import {profileApi, ResultCodes, usersApi} from "../api/api";
+import {ResultCodes} from "../api/api";
 import {BaseThunkType, InferActionsTypes} from "./redux-store";
 import {FormAction, stopSubmit} from "redux-form";
+import {profileApi} from "../api/profile-api";
 
 
 const initialState: initialStateTypeofProfile = {
@@ -118,7 +119,7 @@ export const saveProfile = (profile: profileType): ThunkType => async (dispatch,
 }
 
 export const getUserProfile = (userId: string) => async (dispatch: Dispatch) => {
-    const data = await usersApi.getProfile(userId)
+    const data = await profileApi.getProfile(userId)
     dispatch(actions.setUserProfile(data))
 }
 

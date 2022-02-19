@@ -1,7 +1,9 @@
-import {authApi, CaptchaResultCode, ResultCodes, securityApi} from "../api/api";
+import {CaptchaResultCode, ResultCodes} from "../api/api";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {FormAction, stopSubmit} from "redux-form";
 import {AppRootStoreType} from "./redux-store";
+import {authApi} from "../api/auth-api";
+import {securityApi} from "../api/security-api";
 
 const initialState = {
     id: null,

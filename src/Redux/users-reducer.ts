@@ -1,6 +1,7 @@
-import {ResultCodes, usersApi} from "../api/api";
+import {ResultCodes} from "../api/api";
 import {Dispatch} from "redux";
 import {InferActionsTypes} from "./redux-store";
+import {usersApi} from "../api/users-api";
 
 const initialState = {
     users: [] as Array<usersType>,
