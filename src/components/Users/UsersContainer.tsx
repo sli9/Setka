@@ -11,10 +11,10 @@ import {
 } from "../../Redux/users-reducer";
 import React from "react";
 import {Preloader} from "../common/Preloader";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {
-    currentPageSelector, followingInProgressSelector,
+    currentPageSelector,
+    followingInProgressSelector,
     isFetchingSelector,
     pageSizeSelector,
     totalUsersSelector,
@@ -72,7 +72,6 @@ export type mapDispatchToPropsType = {
 
 
 export default compose<React.ComponentType>(
-
     connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing})
-    )(UsersContainer)
+)(UsersContainer)
 

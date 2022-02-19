@@ -9,6 +9,14 @@ const instance = axios.create({
     },
 })
 
+export enum ResultCodes {
+    success = 0,
+    error = 1,
+}
+export enum CaptchaResultCode {
+    captchaIsRequired = 10,
+}
+
 export const usersApi = {
     getUsers(currentPage: number, pageSize: number) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
@@ -45,19 +53,29 @@ export const profileApi = {
                 'Content-Type': 'multipart/form-data'
             }
         })
-        // .then(response => response.data)
     },
     saveProfile(profile: profileType) {
         return instance.put(`profile`, profile)
     }
 }
 
+type MeType = {
+    data: {id: number, email: string, login: string}
+    resultCode: ResultCodes
+    messages: Array<string>
+}
+type LoginType = {
+    data: {id: number}
+    resultCode: CaptchaResultCode | ResultCodes
+    messages: Array<string>
+}
+
 export const authApi = {
     me() {
-        return instance.get(`auth/me`)
+        return instance.get<MeType>(`auth/me`)
     },
-    login(email: string, password: string, rememberMe: boolean, captcha: string) {
-        return instance.post(`auth/login`, {email, password, rememberMe, captcha})
+    login(email: string, password: string, rememberMe: boolean, captcha: string | null = null) {
+        return instance.post<LoginType>(`auth/login`, {email, password, rememberMe, captcha})
     },
     logout() {
         return instance.delete(`auth/login`)

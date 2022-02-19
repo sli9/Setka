@@ -1,4 +1,4 @@
-import ProfileReducer, {AddPost, DeletePost} from "./profile-reducer";
+import ProfileReducer, {actions} from "./profile-reducer";
 
 const state = {
     posts: [
@@ -30,7 +30,7 @@ const state = {
 }
 
 test('new post addition', () => {
-    const action = AddPost('New post testing')
+    const action = actions.addPost('New post testing')
     const newState = ProfileReducer(state, action)
 
     expect(newState.posts.length).toBe(3)
@@ -39,7 +39,7 @@ test('new post addition', () => {
 });
 
 test('post remove', () => {
-    const action = DeletePost(1)
+    const action = actions.DeletePost(1)
     const newState = ProfileReducer(state, action)
 
     expect(newState.posts.length).toBe(1)

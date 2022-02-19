@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {profileApi, usersApi} from "../api/api";
+import {profileApi, ResultCodes, usersApi} from "../api/api";
 import {BaseThunkType, InferActionsTypes} from "./redux-store";
 import {FormAction, stopSubmit} from "redux-form";
 
@@ -30,9 +30,10 @@ const initialState: initialStateTypeofProfile = {
             large: null
         }
     },
-    status: ''
+    status: '',
+
 }
-let idNumber = 2;
+let idNumber = 2; // for new  posts id
 
 export type initialStateTypeofProfile = {
     posts: Array<postType>
@@ -51,7 +52,6 @@ export type profileType = {
         large: null | string
     }
 }
-
 export type contactsType = {
     facebook: string
     website: string,
@@ -99,7 +99,7 @@ type ThunkType = BaseThunkType<ActionsType | FormAction>
 //thunks
 export const saveAva = (ava: File) => async (dispatch: Dispatch) => {
     const response = await profileApi.saveAva(ava)
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === ResultCodes.success) {
         dispatch(actions.setOwnerPhoto(response.data.data.photos))
     }
 }
@@ -108,11 +108,12 @@ export const saveProfile = (profile: profileType): ThunkType => async (dispatch,
                                                                        getState) => {
     const userId = JSON.stringify(getState().auth.id)
     const response = await profileApi.saveProfile(profile)
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === ResultCodes.success) {
         dispatch(getUserProfile(userId))
     } else {
         const error = response.data.messages.length > 0 ? response.data.messages[0] : 'Something wrong'
         dispatch(stopSubmit('edit-profile-form', {_error: error}))
+        return Promise.reject(error)
     }
 }
 
@@ -127,7 +128,7 @@ export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
 }
 export const updateUserStatus = (status: string) => async (dispatch: Dispatch) => {
     const response = await profileApi.updateStatus(status)
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === ResultCodes.success) {
         dispatch(actions.setStatus(status))
     }
 }
@@ -154,7 +155,7 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
         case "profile/SET-USER-PROFILE":
             return {
                 ...state,
-                profile: action.profile
+                profile: action.profile,
             }
         case "profile/SET-USER-STATUS":
             return {

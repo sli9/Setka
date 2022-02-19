@@ -1,4 +1,4 @@
-import {usersApi} from "../api/api";
+import {ResultCodes, usersApi} from "../api/api";
 import {Dispatch} from "redux";
 
 const initialState = {
@@ -30,8 +30,14 @@ type locationType = {
 }
 
 
-type actionsTypes = followType | unfollowType | setUsersType | setCurrentPageType | setTotalUsersCountType |
-    toggleFetchingType | toggleFollowingType
+type actionsTypes =
+    | followType
+    | unfollowType
+    | setUsersType
+    | setCurrentPageType
+    | setTotalUsersCountType
+    | toggleFetchingType
+    | toggleFollowingType
 type followType = ReturnType<typeof followSuccess>
 type unfollowType = ReturnType<typeof unFollowSuccess>
 type setUsersType = ReturnType<typeof setUsers>
@@ -40,7 +46,7 @@ type setTotalUsersCountType = ReturnType<typeof setTotalUsersCount>
 type toggleFetchingType = ReturnType<typeof toggleFetching>
 type toggleFollowingType = ReturnType<typeof toggleFollowing>
 
-
+//actions
 export const followSuccess = (userId: number) => {
     return {
         type: 'users/FOLLOW',
@@ -85,6 +91,8 @@ export const toggleFollowing = (fetching: boolean, userId: number) => {
     } as const
 }
 
+
+
 const UsersReducer = (state = initialState, action: actionsTypes): initialStateOfUsersType => {
     switch (action.type) {
         case 'users/FOLLOW':
@@ -125,8 +133,9 @@ const UsersReducer = (state = initialState, action: actionsTypes): initialStateO
     }
 }
 
+//thunks
 export const getUsers = (currentPage: number, pageSize: number) => {
-    return async (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch<actionsTypes>) => {
         dispatch(toggleFetching(true))
         usersApi.getUsers(currentPage, pageSize).then(data => {
             dispatch(toggleFetching(false))
@@ -137,11 +146,11 @@ export const getUsers = (currentPage: number, pageSize: number) => {
     }
 }
 export const follow = (userId: number) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<actionsTypes>) => {
         dispatch(toggleFollowing(true, userId))
         usersApi.follow(userId)
             .then(data => {
-                if (data.resultCode === 0) {
+                if (data.resultCode === ResultCodes.success) {
                     dispatch(followSuccess(userId))
                 }
                 dispatch(toggleFollowing(false, userId))
@@ -149,11 +158,11 @@ export const follow = (userId: number) => {
     }
 }
 export const unFollow = (userId: number) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<actionsTypes>) => {
         dispatch(toggleFollowing(true, userId))
         usersApi.unfollow(userId)
             .then(data => {
-                if (data.resultCode === 0) {
+                if (data.resultCode === ResultCodes.success) {
                     dispatch(unFollowSuccess(userId))
                 }
                 dispatch(toggleFollowing(false, userId))
