@@ -21,6 +21,7 @@ export type initialStateAuthType = {
 
 export type actionsTypes = ReturnType<typeof SetAuthUserData> | FormAction
 
+//actions
 const SetAuthUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
     type: 'auth/SET-USER-DATA',
     payload: {id, email, login, isAuth},
@@ -30,6 +31,7 @@ const SetCaptchaUrl = (captchaUrl: string) => ({
     payload: {captchaUrl},
 } as const)
 
+//thunks
 export const getAuthUserData = (): ThunkAction<Promise<void>, AppRootStoreType, any, actionsTypes> => async (dispatch) => {
     const response = await authApi.me()
     if (response.data.resultCode === ResultCodes.success) {
@@ -63,7 +65,7 @@ export const logout = (): ThunkAction<Promise<void>, AppRootStoreType, any, acti
     }
 }
 
-
+//reducer
 const AuthReducer = (state: initialStateAuthType = initialState, action: actionsTypes): initialStateAuthType => {
 
     switch (action.type) {

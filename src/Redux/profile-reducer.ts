@@ -133,7 +133,7 @@ export const updateUserStatus = (status: string) => async (dispatch: Dispatch) =
     }
 }
 
-
+//reducer
 const ProfileReducer = (state: initialStateTypeofProfile = initialState, action: ActionsType): initialStateTypeofProfile => {
     switch (action.type) {
         case "profile/ADD-POST":

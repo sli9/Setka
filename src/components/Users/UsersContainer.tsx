@@ -5,8 +5,7 @@ import {
     follow,
     getUsers,
     initialStateOfUsersType,
-    setTotalUsersCount,
-    toggleFollowing,
+    actions,
     unFollow
 } from "../../Redux/users-reducer";
 import React from "react";
@@ -72,6 +71,6 @@ export type mapDispatchToPropsType = {
 
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {follow, unFollow, setTotalUsersCount, getUsers, toggleFollowing})
+    connect(mapStateToProps, {follow, unFollow, setTotalUsersCount: actions.setTotalUsersCount, getUsers, toggleFollowing: actions.toggleFollowing})
 )(UsersContainer)
 
