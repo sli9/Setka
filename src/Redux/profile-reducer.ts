@@ -5,53 +5,29 @@ import {FormAction, stopSubmit} from "redux-form";
 import {profileApi} from "../api/profile-api";
 
 
-const initialState: initialStateTypeofProfile = {
+const initialState = {
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 5},
         {id: 2, message: 'It\'s my first post', like: 2}
-    ],
-    profile: {
-        userId: 1,
-        aboutMe: '',
-        contacts: {
-            facebook: '',
-            website: '',
-            vk: '',
-            twitter: '',
-            instagram: '',
-            youtube: '',
-            github: '',
-            mainLink: '',
-        },
-        lookingForAJob: false,
-        lookingForAJobDescription: null,
-        fullName: '',
-        photos: {
-            small: null,
-            large: null
-        }
-    },
+    ] as Array<postType>,
+    profile: null as profileType | null,
     status: '',
-
 }
 let idNumber = 2; // for new  posts id
 
-export type initialStateTypeofProfile = {
-    posts: Array<postType>
-    profile: profileType
-    status: string
-}
+export type initialStateTypeofProfile = typeof initialState
 export type profileType = {
     userId: number
     aboutMe: string
     contacts: contactsType
     lookingForAJob: boolean
-    lookingForAJobDescription: string | null
+    lookingForAJobDescription: string
     fullName: string
-    photos: {
-        small: string | null
-        large: null | string
-    }
+    photos: photoType
+}
+type photoType = {
+    small: string | null
+    large: null | string
 }
 export type contactsType = {
     facebook: string
@@ -89,7 +65,7 @@ export const actions = {
         type: 'profile/SET-USER-STATUS',
         status
     } as const),
-    setOwnerPhoto: (photos: { small: string | null, large: null | string }) => ({
+    setOwnerPhoto: (photos: photoType) => ({
         type: 'profile/SET-OWNER-PHOTO',
         photos
     } as const)
@@ -166,7 +142,7 @@ const ProfileReducer = (state: initialStateTypeofProfile = initialState, action:
         case "profile/SET-OWNER-PHOTO":
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos}
+                profile: {...state.profile, photos: action.photos} as profileType
             }
         default:
             return state

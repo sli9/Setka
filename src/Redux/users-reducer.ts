@@ -1,6 +1,5 @@
 import {ResultCodes} from "../api/api";
-import {Dispatch} from "redux";
-import {InferActionsTypes} from "./redux-store";
+import {BaseThunkType, InferActionsTypes} from "./redux-store";
 import {usersApi} from "../api/users-api";
 
 const initialState = {
@@ -32,6 +31,8 @@ type locationType = {
 
 
 //actions
+type actionsTypes = InferActionsTypes<typeof actions>
+
 export const actions = {
     followSuccess: (userId: number) => {
         return {
@@ -78,43 +79,36 @@ export const actions = {
     },
 }
 
-type actionsTypes =InferActionsTypes<typeof actions>
-
 
 //thunks
-export const getUsers = (currentPage: number, pageSize: number) => {
-    return async (dispatch: Dispatch<actionsTypes>) => {
+export const getUsers = (currentPage: number, pageSize: number): BaseThunkType<actionsTypes> => {
+    return async (dispatch) => {
         dispatch(actions.toggleFetching(true))
-        usersApi.getUsers(currentPage, pageSize).then(data => {
-            dispatch(actions.toggleFetching(false))
-            dispatch(actions.setUsers(data.items))
-            dispatch(actions.setCurrentPage(currentPage))
-            dispatch(actions.setTotalUsersCount(data.totalCount))
-        })
+        const data = await usersApi.getUsers(currentPage, pageSize)
+        dispatch(actions.toggleFetching(false))
+        dispatch(actions.setUsers(data.items))
+        dispatch(actions.setCurrentPage(currentPage))
+        dispatch(actions.setTotalUsersCount(data.totalCount))
     }
 }
-export const follow = (userId: number) => {
-    return (dispatch: Dispatch<actionsTypes>) => {
+export const follow = (userId: number): BaseThunkType<actionsTypes> => {
+    return async (dispatch) => {
         dispatch(actions.toggleFollowing(true, userId))
-        usersApi.follow(userId)
-            .then(data => {
-                if (data.resultCode === ResultCodes.success) {
-                    dispatch(actions.followSuccess(userId))
-                }
-                dispatch(actions.toggleFollowing(false, userId))
-            })
+        const data = await usersApi.follow(userId)
+        if (data.resultCode === ResultCodes.success) {
+            dispatch(actions.followSuccess(userId))
+        }
+        dispatch(actions.toggleFollowing(false, userId))
     }
 }
-export const unFollow = (userId: number) => {
-    return (dispatch: Dispatch<actionsTypes>) => {
+export const unFollow = (userId: number): BaseThunkType<actionsTypes> => {
+    return async (dispatch) => {
         dispatch(actions.toggleFollowing(true, userId))
-        usersApi.unfollow(userId)
-            .then(data => {
-                if (data.resultCode === ResultCodes.success) {
-                    dispatch(actions.unFollowSuccess(userId))
-                }
-                dispatch(actions.toggleFollowing(false, userId))
-            })
+        const data = await usersApi.unfollow(userId)
+        if (data.resultCode === ResultCodes.success) {
+            dispatch(actions.unFollowSuccess(userId))
+        }
+        dispatch(actions.toggleFollowing(false, userId))
     }
 }
 
@@ -158,8 +152,6 @@ const UsersReducer = (state = initialState, action: actionsTypes): initialStateO
             return state
     }
 }
-
-
 
 
 export default UsersReducer;
