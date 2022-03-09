@@ -1,13 +1,7 @@
 import {connect} from "react-redux";
 import Users from "./Users";
 import {AppRootStoreType} from "../../Redux/redux-store";
-import {
-    follow,
-    getUsers,
-    initialStateOfUsersType,
-    actions,
-    unFollow
-} from "../../Redux/users-reducer";
+import {actions, follow, getUsers, initialStateOfUsersType, unFollow} from "../../Redux/users-reducer";
 import React from "react";
 import {Preloader} from "../common/Preloader";
 import {compose} from "redux";
@@ -71,6 +65,11 @@ export type mapDispatchToPropsType = {
 
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {follow, unFollow, setTotalUsersCount: actions.setTotalUsersCount, getUsers, toggleFollowing: actions.toggleFollowing})
+    connect(mapStateToProps, {
+        follow,
+        unFollow,
+        setTotalUsersCount: actions.setTotalUsersCount,
+        getUsers, toggleFollowing: actions.toggleFollowing
+    })
 )(UsersContainer)
 

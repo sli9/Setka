@@ -14,7 +14,7 @@ type FormDataType = {
     rememberMe: boolean
     captcha: string
 }
-type FormDataKeysType = keyof FormDataType // 'email', 'password', 'rememberMe'
+type FormDataKeysType = Extract< keyof FormDataType, string > // 'email', 'password', 'rememberMe'
 
 type FormOwnDataType = { captchaUrl: string | null }
 

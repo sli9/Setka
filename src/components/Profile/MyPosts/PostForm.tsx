@@ -1,20 +1,20 @@
 import React from "react";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../../utilits/validators/validators";
-import {Textarea} from "../../common/FormControls/FormControls";
+import {createField, Textarea} from "../../common/FormControls/FormControls";
 
 export type PostFormType = {
     newPost: string
 }
 
 const maxLength = maxLengthCreator(10)
+type PostFormDataKeysType = Extract<keyof PostFormType, string>
 
 const PostForm = (props: InjectedFormProps<PostFormType>) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field component={Textarea} name='newPost' placeholder='Enter new post'
-                       validate={[required, maxLength]}/>
+                {createField<PostFormDataKeysType>('Enter new post', 'newPost', [required, maxLength], Textarea)}
             </div>
             <div>
                 <button>Add post</button>

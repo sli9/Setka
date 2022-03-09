@@ -23,7 +23,7 @@ const ProfileInfo = (props: PropsType) => {
     }
 
     const newAvaHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files !== null && e.target.files.length) {//или if (e.target.files?.lenght)
+        if (e.target.files && e.target.files.length) {//или if (e.target.files?.lenght)
             props.saveAva(e.target.files[0])
         }
     }
