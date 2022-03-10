@@ -95,6 +95,7 @@ export const follow = (userId: number): BaseThunkType<actionsTypes> => {
     return async (dispatch) => {
         dispatch(actions.toggleFollowing(true, userId))
         const data = await usersApi.follow(userId)
+
         if (data.resultCode === ResultCodes.success) {
             dispatch(actions.followSuccess(userId))
         }

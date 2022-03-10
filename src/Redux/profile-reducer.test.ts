@@ -1,6 +1,6 @@
-import ProfileReducer, {actions} from "./profile-reducer";
+import ProfileReducer, {actions, initialStateTypeofProfile} from "./profile-reducer";
 
-const state = {
+const state: initialStateTypeofProfile = {
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 5},
         {id: 2, message: 'It\'s my first post', like: 2}
@@ -19,7 +19,7 @@ const state = {
             mainLink: '',
         },
         lookingForAJob: false,
-        lookingForAJobDescription: null,
+        lookingForAJobDescription: '',
         fullName: '',
         photos: {
             small: null,
