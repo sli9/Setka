@@ -1,7 +1,8 @@
 import React from "react";
-import {usersType} from "../../Redux/users-reducer";
+import {UsersSearchFormType, usersType} from "../../Redux/users-reducer";
 import {Paginator} from "../common/paginator/Paginator";
 import User from "./User";
+import {UsersSearchForm} from "./UsersSearchForm";
 
 type UsersType = {
     totalUsers: number
@@ -12,6 +13,7 @@ type UsersType = {
     unFollow: (userId: number) => void
     follow: (userId: number) => void
     followingInProgress: Array<number>
+    onFilterChanged: (filter:UsersSearchFormType) => void
 }
 
 function Users(props: UsersType) {
@@ -22,6 +24,8 @@ function Users(props: UsersType) {
                    pageSize={props.pageSize}
                    onChangePage={props.onChangePage}
                    portion={10}/>
+
+        <UsersSearchForm onFilterChanged={props.onFilterChanged}/>
 
         {props.users.map(u => <User key={u.id}
                                     followingInProgress={props.followingInProgress}

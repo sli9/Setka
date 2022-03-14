@@ -1,7 +1,14 @@
 import {connect} from "react-redux";
 import Users from "./Users";
 import {AppRootStoreType} from "../../Redux/redux-store";
-import {actions, follow, getUsers, initialStateOfUsersType, unFollow} from "../../Redux/users-reducer";
+import {
+    actions,
+    follow,
+    getUsers,
+    initialStateOfUsersType,
+    unFollow,
+    UsersSearchFormType
+} from "../../Redux/users-reducer";
 import React from "react";
 import {Preloader} from "../common/Preloader";
 import {compose} from "redux";
@@ -11,6 +18,7 @@ import {
     isFetchingSelector,
     pageSizeSelector,
     totalUsersSelector,
+    usersFilterSelector,
     usersSelector
 } from "../../Redux/users-selectors";
 
@@ -18,11 +26,15 @@ import {
 class UsersContainer extends React.Component<mapDispatchToPropsType & initialStateOfUsersType> {
 
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize)
+        this.props.getUsers(this.props.currentPage, this.props.pageSize, this.props.filter)
     }
 
     onChangePage = (pageNumber: number) => {
-        this.props.getUsers(pageNumber, this.props.pageSize)
+        this.props.getUsers(pageNumber, this.props.pageSize, this.props.filter)
+    }
+
+    onFilterChanged = (filter: UsersSearchFormType) => {
+        this.props.getUsers(1, this.props.pageSize, filter)
     }
 
     render() {
@@ -32,6 +44,7 @@ class UsersContainer extends React.Component<mapDispatchToPropsType & initialSta
                 totalUsers={this.props.totalUsers}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
+                onFilterChanged={this.onFilterChanged}
                 onChangePage={this.onChangePage}
                 users={this.props.users}
                 unFollow={this.props.unFollow}
@@ -52,6 +65,7 @@ const mapStateToProps = (state: AppRootStoreType): initialStateOfUsersType => {
         currentPage: currentPageSelector(state),
         isFetching: isFetchingSelector(state),
         followingInProgress: followingInProgressSelector(state),
+        filter: usersFilterSelector(state)
     }
 }
 
@@ -60,7 +74,7 @@ export type mapDispatchToPropsType = {
     unFollow: (userId: number) => void
     setTotalUsersCount: (totalCount: number) => void
     toggleFollowing: (fetching: boolean, userId: number) => void
-    getUsers: (currentPage: number, pageSize: number) => void
+    getUsers: (currentPage: number, pageSize: number, filter: UsersSearchFormType) => void
 }
 
 

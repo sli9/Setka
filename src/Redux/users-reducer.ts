@@ -9,8 +9,13 @@ const initialState = {
     currentPage: 1,
     isFetching: false,
     followingInProgress: [] as Array<number>,
+    filter: {
+        term: '',
+        friend:  null as null | boolean
+    }
 }
 export type initialStateOfUsersType = typeof initialState
+export type UsersSearchFormType = typeof initialState.filter
 
 type photoType = {
     small: string | null
@@ -77,17 +82,25 @@ export const actions = {
             userId
         } as const
     },
+    setFilter: (filter: UsersSearchFormType) => {
+        return {
+            type: 'users/SET-FILTER',
+            payload: filter
+        } as const
+    },
 }
 
 
 //thunks
-export const getUsers = (currentPage: number, pageSize: number): BaseThunkType<actionsTypes> => {
+export const getUsers = (currentPage: number, pageSize: number, filter: UsersSearchFormType): BaseThunkType<actionsTypes> => {
     return async (dispatch) => {
         dispatch(actions.toggleFetching(true))
-        const data = await usersApi.getUsers(currentPage, pageSize)
+        dispatch(actions.setCurrentPage(currentPage))
+        dispatch(actions.setFilter(filter))
+
+        const data = await usersApi.getUsers(currentPage, pageSize, filter.term, filter.friend)
         dispatch(actions.toggleFetching(false))
         dispatch(actions.setUsers(data.items))
-        dispatch(actions.setCurrentPage(currentPage))
         dispatch(actions.setTotalUsersCount(data.totalCount))
     }
 }
@@ -148,6 +161,10 @@ const UsersReducer = (state = initialState, action: actionsTypes): initialStateO
                 followingInProgress: action.fetching
                     ? [...state.followingInProgress, action.userId]
                     : state.followingInProgress.filter(id => id !== action.userId)
+            }
+        case 'users/SET-FILTER':
+            return {
+                ...state, filter: action.payload
             }
         default:
             return state

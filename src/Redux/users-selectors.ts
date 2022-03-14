@@ -1,6 +1,6 @@
 import {AppRootStoreType} from "./redux-store";
 import {createSelector} from "reselect";
-import {usersType} from "./users-reducer";
+import {UsersSearchFormType, usersType} from "./users-reducer";
 
 const getUsers = (state: AppRootStoreType) => {
     return state.usersPage.users
@@ -42,4 +42,10 @@ const getFollowingInProgress = (state: AppRootStoreType) => {
 }
 export const followingInProgressSelector = createSelector(getFollowingInProgress,(followingInProgress: Array<number>) =>{
     return followingInProgress
+})
+const getUsersFilter = (state: AppRootStoreType) => {
+    return state.usersPage.filter
+}
+export const usersFilterSelector = createSelector(getUsersFilter,(filter: UsersSearchFormType) =>{
+    return filter
 })
