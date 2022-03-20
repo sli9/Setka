@@ -2,9 +2,9 @@ import React, {ComponentType} from 'react';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
 import {Route, withRouter} from "react-router-dom";
-import UsersContainer from "./components/Users/UsersContainer";
+import {UsersPage} from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
+import {Login} from "./components/Login/Login";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./Redux/app-reducer";
@@ -33,7 +33,7 @@ class App extends React.Component<mapStatePropsType & mapDispatchPropsType> {
                     <Route path='/profile/:userId?' render={() => {
                         return <React.Suspense fallback={<Preloader/>}><ProfileContainer/></React.Suspense>
                     }}/>
-                    <Route path='/users' render={() => <UsersContainer/>}/>
+                    <Route path='/users' render={() => <UsersPage/>}/>
                     <Route path='/login' render={() => <Login/>}/>
                 </div>
             </div>

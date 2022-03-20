@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {InjectedFormProps, reduxForm} from "redux-form";
 import {createField, Input} from "../common/FormControls/FormControls";
 import {required} from "../../utilits/validators/validators";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../Redux/auth-reducer";
 import {AppRootStoreType} from "../../Redux/redux-store";
 import {Redirect} from "react-router-dom";
@@ -14,7 +14,7 @@ type FormDataType = {
     rememberMe: boolean
     captcha: string
 }
-type FormDataKeysType = Extract< keyof FormDataType, string > // 'email', 'password', 'rememberMe'
+type FormDataKeysType = Extract<keyof FormDataType, string> // 'email', 'password', 'rememberMe'
 
 type FormOwnDataType = { captchaUrl: string | null }
 
@@ -55,30 +55,21 @@ const LoginForm: FC<InjectedFormProps<FormDataType, FormOwnDataType> & FormOwnDa
 const LoginReduxForm = reduxForm<FormDataType, FormOwnDataType>({form: 'login'})(LoginForm)
 
 
-const Login = (props: MapDispatchType & MapStateType) => {
+export const Login = () => {
+
+    const captchaUrl = useSelector((state: AppRootStoreType) => state.auth.captchaUrl)
+    const isAuth = useSelector((state: AppRootStoreType) => state.auth.isAuth)
+
+    const dispatch = useDispatch()
+
     const onSubmit = (formData: FormDataType) => {
-        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
+        dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))// this login is not the ThunkCreator, it's callback from HOC connect that inside dispatch ThunkCreator login
     }
-    if (props.isAuth) {
+    if (isAuth) {
         return <Redirect to={'/profile'}/>
     }
     return <div>
         <h1>LOGIN</h1>
-        <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
+        <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
     </div>
 }
-
-type MapDispatchType = {
-    login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
-}
-type MapStateType = {
-    isAuth: boolean
-    captchaUrl: string | null
-}
-const mapStateToProps = (state: AppRootStoreType) => {
-    return {
-        isAuth: state.auth.isAuth,
-        captchaUrl: state.auth.captchaUrl,
-    }
-}
-export default connect(mapStateToProps, {login})(Login)
