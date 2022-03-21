@@ -1,52 +1,54 @@
 import React, {ChangeEvent, useState} from 'react';
 import classes from './ProfileInfo.module.css'
-import {profileType} from "../../../Redux/profile-reducer";
+import {profileType, saveAva, saveProfile} from "../../../Redux/profile-reducer";
 import {Preloader} from "../../common/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import DefaultPhoto from "../../../assets/images/Default_User_Icon.png";
 import ProfileDataForm from "./ProfileDataForm";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStoreType} from "../../../Redux/redux-store";
 
 type PropsType = {
-    profile: profileType | null
-    status: string
-    updateStatus: (status: string) => void
     isOwner: boolean
-    saveAva: (ava: File) => void
-    saveProfile: (profile: profileType) => void
 }
 
 const ProfileInfo = (props: PropsType) => {
+
+    const profile = useSelector((state: AppRootStoreType) => state.profilePage.profile)
+
     const [editMode, setEditMode] = useState(false)
 
-    if (!props.profile) { //if props.profile === nul || props.profile === undefind
+    const dispatch = useDispatch()
+
+    if (!profile) { //if props.profile === nul || props.profile === undefind
         return <Preloader/>
     }
 
     const newAvaHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length) {//или if (e.target.files?.lenght)
-            props.saveAva(e.target.files[0])
+            dispatch(saveAva(e.target.files[0]))
         }
     }
 
     const onSubmit = (FormData: profileType) => {
-        props.saveProfile(FormData)
+        dispatch(saveProfile(FormData))
 
     }
     return <div className={classes.content}>
 
         <div className={classes.description}>
-            <img src={props.profile.photos.large || DefaultPhoto} className={classes.ava} alt='yps'/>
+            <img src={profile.photos.large || DefaultPhoto} className={classes.ava} alt='yps'/>
         </div>
         {props.isOwner && <input type={'file'} onChange={newAvaHandler}/>}
 
         <div>
-            <ProfileStatusWithHooks status={props.status} updateUserStatus={props.updateStatus}/>
+            <ProfileStatusWithHooks />
         </div>
 
         {editMode ?
-            <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit}/> :
+            <ProfileDataForm initialValues={profile} profile={profile} onSubmit={onSubmit}/> :
             <ProfileData goToEditMode={()=>{setEditMode(true)}}
-                         profile={props.profile}
+                         profile={profile}
                          isOwner={props.isOwner}/>}
     </div>
 }

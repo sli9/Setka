@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './MyPosts.module.css'
 import Post from "./Post/Post";
-import {mapDispatchToPropsType, mapStateToPropsType} from "./MyPostsContainer";
 import PostReduxForm, {PostFormType} from "./PostForm";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStoreType} from "../../../Redux/redux-store";
+import {actions} from "../../../Redux/profile-reducer";
 
-type PostsType = mapStateToPropsType & mapDispatchToPropsType
 
-const MyPosts = React.memo((props: PostsType) => {
+const MyPosts: FC = React.memo(() => {
+
+    const posts = useSelector((state: AppRootStoreType) => state.profilePage.posts)
+
+    const dispatch = useDispatch()
 
     const PostHandler = (values: PostFormType) => {
-        props.AddPost(values.newPost)
+        dispatch(actions.addPost(values.newPost))
     }
 
     return <div className={classes.posts}>
@@ -17,7 +22,7 @@ const MyPosts = React.memo((props: PostsType) => {
         <PostReduxForm onSubmit={PostHandler}/>
         <div><h3>New post</h3></div>
         <div className={classes.posts}>
-            {props.posts.map((p, i) => <Post key={i} id={p.id} message={p.message} like={p.like}/>)}
+            {posts.map((p, i) => <Post key={i} id={p.id} message={p.message} like={p.like}/>)}
         </div>
     </div>
 
