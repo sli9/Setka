@@ -1,7 +1,7 @@
 .header {
     grid-area: h;
-    background-color: green;
 }
+
 .header img {
     width: 50px;
 }
@@ -9,8 +9,7 @@
 .loginBlock {
     float: right;
     margin-right: 10px;
+    color: white;
 }
-.loginBlock a {
-    text-decoration: none;
-    color: ghostwhite;
-}
+
+

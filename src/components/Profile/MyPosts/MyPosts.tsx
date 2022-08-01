@@ -7,7 +7,7 @@ import {AppRootStoreType} from "../../../Redux/redux-store";
 import {actions} from "../../../Redux/profile-reducer";
 
 
-const MyPosts: FC = React.memo(() => {
+export const MyPosts: FC = React.memo(() => {
 
     const posts = useSelector((state: AppRootStoreType) => state.profilePage.posts)
 
@@ -27,5 +27,3 @@ const MyPosts: FC = React.memo(() => {
     </div>
 
 })
-
-export default MyPosts;

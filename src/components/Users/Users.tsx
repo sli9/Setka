@@ -14,11 +14,12 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import * as queryString from "querystring";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
 
-function Users() {
+function Uusers() {
 
     const users = useSelector(getUsersSelector)
     const totalUsers = useSelector(getTotalUsers)
@@ -95,4 +96,4 @@ function Users() {
     </div>
 }
 
-export default Users;
+export const Users = withAuthRedirect(Uusers);

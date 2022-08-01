@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import Users from "./Users";
+import {Users} from "./Users";
 import React from "react";
 import {Preloader} from "../common/Preloader";
 import {getIsFetching} from "../../Redux/users-selectors";
