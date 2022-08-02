@@ -18,6 +18,7 @@ const {Header, Content, Sider} = Layout;
 
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"))
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"))
+const ChatPage = React.lazy(() => import("./pages/chat/ChatPage"))
 
 class App extends React.Component<mapStatePropsType & mapDispatchPropsType> {
 
@@ -30,7 +31,7 @@ class App extends React.Component<mapStatePropsType & mapDispatchPropsType> {
         return (
             <Layout>
                 <Header className="site-layout-sub-header-background" style={{padding: 0}}>
-                <HeaderContainer/>
+                    <HeaderContainer/>
                 </Header>
                 <Layout>
                     <Sider>
@@ -40,11 +41,10 @@ class App extends React.Component<mapStatePropsType & mapDispatchPropsType> {
                             mode="inline"
                             defaultSelectedKeys={['1']}
                         >
-                            <Menu.Item key={'1'} icon={<UserOutlined/>}><NavLink
-                                to='/profile'>Profile</NavLink></Menu.Item>
+                            <Menu.Item key={'1'} icon={<UserOutlined/>}><NavLink to='/profile'>Profile</NavLink></Menu.Item>
                             <Menu.Item key={'2'} icon={<AlignCenterOutlined/>}><NavLink to='/dialogs'>Messages</NavLink></Menu.Item>
-                            <Menu.Item key={'3'} icon={<UsergroupAddOutlined/>}><NavLink
-                                to='/users'>Users</NavLink></Menu.Item>
+                            <Menu.Item key={'3'} icon={<UsergroupAddOutlined/>}><NavLink to='/users'>Users</NavLink></Menu.Item>
+                            <Menu.Item key={'4'} icon={<AlignCenterOutlined/>}><NavLink to='/chat'>Chat</NavLink></Menu.Item>
                         </Menu>
                     </Sider>
                     <Content style={{margin: '24px 16px 0'}}>
@@ -59,6 +59,9 @@ class App extends React.Component<mapStatePropsType & mapDispatchPropsType> {
                                 }}/>
                                 <Route path='/users' render={() => <UsersPage/>}/>
                                 <Route path='/login' render={() => <Login/>}/>
+                                <Route path='/chat' render={() => {
+                                   return <React.Suspense fallback={<Preloader/>}> <ChatPage/></React.Suspense>
+                                }}/>
                                 <Route path='*' render={() => <div>NOT FOUND 404</div>}/>
                             </Switch>
                         </div>
