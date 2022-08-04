@@ -6,6 +6,7 @@ import AuthReducer from "./auth-reducer";
 import thunkMiddleware, {ThunkAction} from "redux-thunk";
 import {reducer as formReducer} from 'redux-form'
 import AppReducer from "./app-reducer";
+import ChatReducer from "./chat-reducer";
 
 const rootReducer = combineReducers({
     profilePage: ProfileReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     auth: AuthReducer,
     form: formReducer,
     app: AppReducer,
+    chat: ChatReducer,
 })
 
 export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
