@@ -36,7 +36,7 @@ const Chat: React.FC = () => {
 const Messages: React.FC = () => {
     const messages = useSelector((state: AppRootStoreType) => state.chat.messages)
     const messageAnchorRef = useRef<HTMLDivElement>(null)
-    const [isAutoScroll, setIsAutoScroll] = useState(false)
+    const [isAutoScroll, setIsAutoScroll] = useState(true)
 
     const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
       const element = e.currentTarget
