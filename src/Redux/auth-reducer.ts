@@ -14,7 +14,7 @@ const initialState = {
 
 export type initialStateAuthType = typeof initialState
 
-export type actionsTypes = ReturnType<typeof SetAuthUserData> | FormAction
+export type actionsTypes = ReturnType<typeof SetAuthUserData> | FormAction | ReturnType<typeof SetCaptchaUrl>
 
 //actions
 const SetAuthUserData = (id: number | null, email: string | null, login: string | null, isAuth: boolean) => ({

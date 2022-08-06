@@ -1,21 +1,21 @@
-import {FormAction} from "redux-form";
-import {ChatApi, ChatMessageType, StatusType} from "../api/chat-api";
+import {ChatApi, ChatMessageAPIType, StatusType} from "../api/chat-api";
 import {Dispatch} from "redux";
-import {BaseThunkType} from "./redux-store";
+import {BaseThunkType, InferActionsTypes} from "./redux-store";
+import {v1} from 'uuid';
+import {FormAction} from "redux-form";
 
-
+type ChatMessageType = ChatMessageAPIType & { id: string }
 const initialState = {
     messages: [] as ChatMessageType[],
     status: 'pending' as StatusType
 }
 
-export type initialStateAuthType = typeof initialState
+export type initialStateChatType = typeof initialState
 
-export type actionsTypes = ReturnType<typeof actions.messagesReceived> | FormAction
-
+export type actionsTypes = InferActionsTypes<typeof actions> | FormAction
 //actions
 export const actions = {
-    messagesReceived: (messages: ChatMessageType[]) => ({
+    messagesReceived: (messages: ChatMessageAPIType[]) => ({
         type: 'chat/MESSAGES-RECEIVED', payload: {messages}
     }),
     statusChanged: (status: StatusType) => ({
@@ -24,7 +24,7 @@ export const actions = {
 }
 
 //thunks
-let _newMessageHandler: ((messages: ChatMessageType[]) => void) | null = null
+let _newMessageHandler: ((messages: ChatMessageAPIType[]) => void) | null = null
 
 const newMessageHandlerCreator = (dispatch: Dispatch) => {
     if (_newMessageHandler === null) {
@@ -47,7 +47,7 @@ const statusChangedHandlerCreator = (dispatch: Dispatch) => {
     return _statusChangedHandler
 }
 
-export const startMessagesListening = (): BaseThunkType => async (dispatch) => {
+export const startMessagesListening = (): BaseThunkType<actionsTypes> => async (dispatch) => {
     ChatApi.start()
     ChatApi.subscribe('messages-received', newMessageHandlerCreator(dispatch))
     ChatApi.subscribe('status-changed', statusChangedHandlerCreator(dispatch))
@@ -62,13 +62,16 @@ export const sendMessage = (message: string): BaseThunkType<actionsTypes> => asy
 }
 
 //reducer
-const ChatReducer = (state: initialStateAuthType = initialState, action: actionsTypes): initialStateAuthType => {
+const ChatReducer = (state: initialStateChatType = initialState, action: actionsTypes): initialStateChatType => {
 
     switch (action.type) {
         case 'chat/MESSAGES-RECEIVED':
             return {
                 ...state,
-                messages: [...state.messages, ...action.payload.messages],
+                messages: [...state.messages, ...action.payload.messages.map((m: ChatMessageAPIType) => ({
+                    ...m,
+                    id: v1()
+                }))].filter((m, index, array) => index >= array.length - 100),
             }
         case 'chat/STATUS-CHANGED':
             return {
@@ -80,3 +83,4 @@ const ChatReducer = (state: initialStateAuthType = initialState, action: actions
     }
 }
 export default ChatReducer
+

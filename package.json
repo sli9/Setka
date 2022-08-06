@@ -29,6 +29,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.1.1",
     "typescript": "^4.1.2",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"
   },
   "homepage": "https://sli9.github.io/Setka",
@@ -59,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.4",
     "gh-pages": "^3.2.3"
   }
 }
