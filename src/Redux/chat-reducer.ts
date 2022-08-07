@@ -66,12 +66,21 @@ const ChatReducer = (state: initialStateChatType = initialState, action: actions
 
     switch (action.type) {
         case 'chat/MESSAGES-RECEIVED':
+            if (action.payload.messages.length < 2){
             return {
                 ...state,
                 messages: [...state.messages, ...action.payload.messages.map((m: ChatMessageAPIType) => ({
                     ...m,
                     id: v1()
                 }))].filter((m, index, array) => index >= array.length - 100),
+            }} else {
+                return {
+                    ...state,
+                    messages: [...action.payload.messages.map((m: ChatMessageAPIType) => ({
+                        ...m,
+                        id: v1()
+                    }))].filter((m, index, array) => index >= array.length - 100),
+                }
             }
         case 'chat/STATUS-CHANGED':
             return {

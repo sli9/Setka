@@ -39,8 +39,8 @@ const Messages: React.FC = () => {
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
     const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-      const element = e.currentTarget
-        if (Math.abs((element.scrollHeight - element.scrollTop) - element.clientHeight)< 30) {
+        const element = e.currentTarget
+        if (Math.abs((element.scrollHeight - element.scrollTop) - element.clientHeight) < 30) {
             !isAutoScroll && setIsAutoScroll(true)
         } else {
             isAutoScroll && setIsAutoScroll(false)
@@ -61,6 +61,7 @@ const Messages: React.FC = () => {
 
 
 const ChatMessage: React.FC<{ message: ChatMessageAPIType }> = React.memo(({message}) => {
+
 
     return <div>
         <img src={message.photo} style={{width: '30px'}} alt={'ava'}/> <b>{message.userName}</b>
@@ -85,10 +86,20 @@ const AddMessageForm: React.FC = () => {
         dispatch(sendMessage(message))
         setMessage('')
     }
+    const sendMessageFromTextareaHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (!message) {
+            return
+        }
+        if ((e.keyCode === 10 || e.keyCode === 13) && e.ctrlKey) {
+            dispatch(sendMessage(message))
+            setMessage('')
+        }
+    }
 
     return <div>
         <div>
-            <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}/>
+            <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}
+                      onKeyUp={sendMessageFromTextareaHandler}/>
         </div>
 
         <button disabled={status !== 'ready'} onClick={sendMessageHandler}>

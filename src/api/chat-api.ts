@@ -62,7 +62,7 @@ export const ChatApi = {
 
     unsubscribe(eventName: EventNameType, callback: MessageReceiveSubscriberType | StatusChangedSubscriberType) {
         // @ts-ignore
-        subscribers = subscribers.filter(s => s !== callback)
+        subscribers[eventName] = subscribers[eventName].filter(s => s !== callback)
     },
 
     sendMessage(message: string) {
